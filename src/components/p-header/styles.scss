@@ -1,6 +1,37 @@
-.header {
-    background-color: purple;
-    color: white;
-    text-align: center;
-    padding: 10px;
+.p-header {
+    --p-header-px-lg: 28px;
+    --p-header-py-lg: 130px;
+
+    --p-header-px-md: 20px;
+    --p-header-py-md: 80px;
+
+    display: flex;
+
+    padding: var(--p-header-px-md) var(--p-header-py-md);
+
+    background-color: var(--color-white);
+    color: var(--primary);
+
+    @media screen and (min-width: 1600px) {
+        padding: var(--p-header-px-lg) var(--p-header-py-lg);
+    }
+    &__logo {
+        cursor: pointer;
+        width: 230px;
+    }
+    &__container {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+    }
+    &__nav {
+        display: flex;
+        gap: 48px;
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: var(--font-bold);
+        }
+    }
 }
