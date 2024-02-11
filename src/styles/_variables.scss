@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --primary: #3C096C;
+  --primary-light: #9D4EDD;
+  --primary-60: #7B2CBF;
+  --primary-80: #5A189A;
+
+  --secondary: #BEE9E8;
+  --secondary-light: #A1DBF0;
+  --secondary-60: #5FA8D3;
+  --secondary-80: #62B6CB;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  --color-error: #FF564F;
+  --color-success: #34C759;
+  --color-warning: #FF912C;
+  --color-info: #00A7E7;
+
+  --dark-100: #00171F;
+  --dark-80:#242B33;
+  --dark-60: #242B33;
+  --dark-40: #99A2A5;
+  --dark-20: #CCD1D2;
+  --dark-10: #EBEEEF;
+
+  --font-family: 'Red Hat Display', sans-serif;
+  --font-family-condensed: 'Roboto Condensed', sans-serif;
+
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+}

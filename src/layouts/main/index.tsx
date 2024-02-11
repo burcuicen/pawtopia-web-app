@@ -2,7 +2,7 @@
 import React from 'react';
 import PHeader from '../../components/p-header';
 import PFooter from '../../components/p-footer';
-
+import './styles.scss';
 type MainLayoutProps = {
   children: React.ReactNode;
 };
