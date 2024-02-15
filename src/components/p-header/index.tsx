@@ -7,6 +7,7 @@ import { RootState } from '../../store/index';
 import './styles.scss';
 
 import BaseButton from '../_base/base-button';
+import BaseIcon from '../_base/base-icon';
 
 const PHeader: React.FC = () => {
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
@@ -30,6 +31,7 @@ const PHeader: React.FC = () => {
                 <BaseButton title='Login' type='default' />
                 <BaseButton title='Join' type='outline' />
             </div>)}
+            {isMobile &&(<BaseIcon icon='material-symbols:menu' width={50} />)}
         </header>
     );
 };
