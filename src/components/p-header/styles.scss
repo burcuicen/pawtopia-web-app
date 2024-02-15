@@ -17,6 +17,25 @@
     @media screen and (min-width: 1600px) {
         padding: var(--p-header-px-lg) var(--p-header-py-lg);
     }
+    //mobile
+    @media screen and (max-width: 768px) {
+        padding: 20px;
+        &__container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        &__nav {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        &__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+    }
     &__logo {
         cursor: pointer;
         width: 230px;

@@ -3,7 +3,6 @@ import './styles.scss';
 const Landing: React.FC = () => {
     return (
         <div className="landing">
-            <div>Hello Pawtopia</div>
         </div>
     );
 };
