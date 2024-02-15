@@ -27,21 +27,11 @@
             flex-direction: column;
             gap: 24px;
         }
-        &__nav {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-        &__actions {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
     }
     &__logo {
         cursor: pointer;
         width: 230px;
-        
+
         @media screen and (max-width: 768px) {
             width: 130px;
         }
@@ -67,7 +57,7 @@
     }
     &__dropdown {
         position: absolute;
-        top: 125px;
+        top: 90px;
         left: 0;
         right: 0;
 
