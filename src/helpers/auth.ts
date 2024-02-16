@@ -15,6 +15,8 @@ export const useCheckLoginStatus = () => {
       const checkLoginStatus = async () => {
         const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWFiZjhmMTY4ZTEzNGZmNWE3NmE3NzUiLCJpYXQiOjE3MDgxMDcxNTgsImV4cCI6MTcwODE5MzU1OH0.0rAef42cJL5b0K6Xsr79O9KA9BivhvjwprpK_GL_PKE'
 
+        const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWFiZjhmMTY4ZTEzNGZmNWE3NmE3NzUiLCJpYXQiOjE3MDgxMDcxNTgsImV4cCI6MTcwODE5MzU1OH0o.0rAef42cJL5b0K6Xsr79O9KA9BivhvjwprpK_GL_PKE'
+
         if (token) {
           try {
             const response = await api.auth.getUserFromToken(token);
