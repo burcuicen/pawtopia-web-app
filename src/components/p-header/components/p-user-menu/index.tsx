@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import BaseIcon from 'src/components/_base/base-icon';
 import './styles.scss';
+
 const PUserMenu: React.FC = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null); 

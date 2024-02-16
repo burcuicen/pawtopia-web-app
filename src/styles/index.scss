@@ -5,3 +5,27 @@ body {
   font-family: var(--font-family);
   font-weight: var(--font-regular);
 }
+.page {
+  --page-px-lg: 28px;
+  --page-py-lg: 130px;
+
+  --page-px-md: 20px;
+  --page-py-md: 40px;
+  
+  padding: var(--page-py-md) var(--page-px-md);
+
+  @media screen and (min-width: 1600px) {
+    padding: var(--page-px-lg) var(--page-py-lg);
+  }
+  &__login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}

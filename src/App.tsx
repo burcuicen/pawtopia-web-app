@@ -7,6 +7,7 @@ import { useCheckLoginStatus } from 'src/helpers/auth';
 
 import MainLayout from 'src/layouts/main';
 import Landing from 'src/pages/landing';
+import Login from 'src/pages/login';
 
 const App: React.FC = () => {
   useCheckLoginStatus();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
       <MainLayout>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </MainLayout>
     </Router>
