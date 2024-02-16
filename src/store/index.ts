@@ -1,5 +1,5 @@
-// src/store.ts
 import { configureStore } from '@reduxjs/toolkit';
+
 import isMobileReducer from './reducers/isMobileSlice';
 import authReducer from './reducers/authSlice';
 

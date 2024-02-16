@@ -1,8 +1,10 @@
-// In layouts/MainLayout.tsx
 import React from 'react';
-import PHeader from '../../components/p-header';
-import PFooter from '../../components/p-footer';
+
+import PHeader from 'src/components/p-header';
+import PFooter from 'src/components/p-footer';
+
 import './styles.scss';
+
 type MainLayoutProps = {
   children: React.ReactNode;
 };

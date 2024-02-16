@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { RootState } from '../../store/index';
+import { RootState } from 'src/store';
 
 import './styles.scss';
 

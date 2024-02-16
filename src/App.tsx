@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setIsMobile } from './store/reducers/isMobileSlice';
 
-import MainLayout from './layouts/main';
-import Landing from './pages/landing';
-import { useCheckLoginStatus } from './helpers/auth';
+import { setIsMobile } from 'src/store/reducers/isMobileSlice';
+import { useCheckLoginStatus } from 'src/helpers/auth';
+
+import MainLayout from 'src/layouts/main';
+import Landing from 'src/pages/landing';
 
 const App: React.FC = () => {
   useCheckLoginStatus();

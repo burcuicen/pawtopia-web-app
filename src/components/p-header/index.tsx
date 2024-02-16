@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/index';
+import { RootState } from 'src/store';
+
+import BaseButton from 'src/components/_base/base-button';
+import BaseIcon from 'src/components/_base/base-icon';
+
 import './styles.scss';
-import BaseButton from '../_base/base-button';
-import BaseIcon from '../_base/base-icon';
 
 const PHeader: React.FC = () => {
     const isMobile = useSelector((state: RootState) => state.isMobile.value);

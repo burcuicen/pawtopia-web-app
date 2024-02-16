@@ -1,9 +1,11 @@
-// src/helpers/authHelpers.ts
 import { useDispatch } from 'react-redux';
-import { setAuthState } from '../store/reducers/authSlice';
-import { useApi } from '../api/api-context'; // Update the import path as needed
 import { useEffect } from 'react';
-import { IUser } from '../api/interfaces/user';
+
+import type { IUser } from 'src/api/interfaces/user';
+
+import { setAuthState } from 'src/store/reducers/authSlice';
+
+import { useApi } from 'src/api/api-context';
 
 export const useCheckLoginStatus = () => {
     const dispatch = useDispatch();
