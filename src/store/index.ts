@@ -1,10 +1,12 @@
 // src/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import isMobileReducer from './reducers/isMobileSlice';
+import authReducer from './reducers/authSlice';
 
 export const store = configureStore({
     reducer: {
         isMobile: isMobileReducer,
+        auth: authReducer,
       },
 });
 

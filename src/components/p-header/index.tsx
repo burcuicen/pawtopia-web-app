@@ -7,6 +7,10 @@ import BaseIcon from '../_base/base-icon';
 
 const PHeader: React.FC = () => {
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
+    
+    const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+    const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+    
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

@@ -5,8 +5,11 @@ import { setIsMobile } from './store/reducers/isMobileSlice';
 
 import MainLayout from './layouts/main';
 import Landing from './pages/landing';
+import { useCheckLoginStatus } from './helpers/auth';
 
 const App: React.FC = () => {
+  useCheckLoginStatus();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
