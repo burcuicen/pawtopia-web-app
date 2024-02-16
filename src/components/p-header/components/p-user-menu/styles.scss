@@ -2,35 +2,39 @@
     position: relative;
 
     display: flex;
-    gap: 14px;
     align-items: center;
+
+    gap: 14px;
+
     &__icon {
-        padding: 8px;
         cursor: pointer;
+
+        padding: 8px;
 
         display: flex;
         align-items: center;
-        &:hover {
+
+        &:hover,
+        &--active {
             background-color: var(--primary);
-            color: var(--color-white);
             border-radius: 50%;
+
+            color: var(--color-white);
 
             transition: all 0.3s ease-in-out;
         }
     }
     &-dropdown {
+        z-index: 1000;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+
         display: flex;
         align-items: center;
         flex-direction: column;
 
         padding: 16px;
-        
-        position: absolute;
-
-        top: 70px;
-        right: 20px;
-        
-        z-index: 1000;
 
         box-shadow: 0px 4px 10px 0px #00000040;
         border-radius: 8px;

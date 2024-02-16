@@ -54,7 +54,7 @@ const PUserMenu: React.FC = () => {
             <div className='p-user-menu__icon'>
                 <BaseIcon icon='material-symbols:favorite-outline' width={32}  />
             </div>
-            <div className='p-user-menu__icon'>
+            <div className={dropdownOpen ? 'p-user-menu__icon p-user-menu__icon--active' : 'p-user-menu__icon'}>
                 <BaseIcon icon='mingcute:user-4-line' width={32} onClick={toggleDropdown}  />
             </div>
 
