@@ -4,56 +4,61 @@ import { RootState } from 'src/store';
 
 import BaseButton from 'src/components/_base/base-button';
 import BaseIcon from 'src/components/_base/base-icon';
-
+import PUserMenu from './components/p-user-menu/index';
 import './styles.scss';
 
 const PHeader: React.FC = () => {
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
     
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-    const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-    
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+    const renderNavLinks = () => (
+        <>
+            <a href="/">Home</a>
+            <a href="/blog">Blog</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </>
+    );
+
+    const renderActions = () => (
+        <>
+            <BaseButton title='Login' type='default' />
+            <BaseButton title='Join' type='outline' />
+        </>
+    );
+
+    const renderMobileIcon = () => (
+        <BaseIcon 
+            icon={dropdownOpen ? 'material-symbols:close' : 'material-symbols:menu'} 
+            width={36} 
+            onClick={toggleDropdown} 
+        />
+    );
+
+    const renderDropdown = () => (
+        <div className='p-header__dropdown'>
+            <div className='p-header__dropdown-item'>{renderNavLinks()}</div>
+            <div className='p-header__dropdown-actions'>{renderActions()}</div>
+        </div>
+    );
+
     return (
-        <header className="p-header">
+       <header className="p-header">
             <div className='p-header__container'>
                 <a href="/" className='p-header__title'>
                     <img src={require('../../assets/logo.png')} alt="Pawtopia" className='p-header__logo' />
                 </a>
-                {!isMobile && (
-                    <div className='p-header__nav'>
-                        <a href="/">Home</a>
-                        <a href="/blog">Blog</a>
-                        <a href="/about">About</a>
-                        <a href="/contact">Contact</a>
-                    </div>
-                )}
+                {!isMobile && <div className='p-header__nav'>{renderNavLinks()}</div>}
             </div>
-            {!isMobile && (
-                <div className='p-header__actions'>
-                    <BaseButton title='Login' type='default' />
-                    <BaseButton title='Join' type='outline' />
-                </div>
-            )}
-            {isMobile && (
-                    <BaseIcon icon={dropdownOpen ? 'material-symbols:close':'material-symbols:menu'} width={36} onClick={toggleDropdown} />
-                )}
-            {isMobile && dropdownOpen && (
-                <div className='p-header__dropdown'>
-                    <a href="/" className='p-header__dropdown-item'>Home</a>
-                    <a href="/blog" className='p-header__dropdown-item'>Blog</a>
-                    <a href="/about" className='p-header__dropdown-item'>About</a>
-                    <a href="/contact" className='p-header__dropdown-item'>Contact</a>
-                    <div className='p-header__dropdown-actions'>
-                        <BaseButton title='Login' type='default' />
-                        <BaseButton title='Join' type='outline' />
-                    </div>
-                </div>
-                
-            )}
+            {!isMobile && !isLoggedIn && <div className='p-header__actions'>{renderActions()}</div>}
+            {isLoggedIn && <PUserMenu />}
+            {isMobile && !isLoggedIn && renderMobileIcon()}
+            {isMobile && dropdownOpen && !isLoggedIn && renderDropdown()}
         </header>
     );
 };

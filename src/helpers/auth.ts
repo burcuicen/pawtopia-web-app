@@ -18,7 +18,9 @@ export const useCheckLoginStatus = () => {
         if (token) {
           try {
             const response = await api.auth.getUserFromToken(token);
-            dispatch(setAuthState({ isLoggedIn: true, userInfo: response?.res?.data as IUser }));
+            if (response?.res?.data._id) {
+              dispatch(setAuthState({ isLoggedIn: true, userInfo: response?.res?.data as IUser }));
+            }
           } catch (error) {
             dispatch(setAuthState({ isLoggedIn: false, userInfo: null }));
           }
