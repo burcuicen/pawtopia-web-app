@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
-
-import { useApi } from 'src/api/api-context';
-import { useNavigate } from 'react-router-dom';
-import { checkLoginStatus } from 'src/helpers/auth';
-
 
 import BaseButton from 'src/components/_base/base-button';
 
 import PInput from 'src/components/p-input';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'src/store';
 import PDropdown from 'src/components/p-dropdown';
-const items = [
-    { id: '1', value: 'Option 1' },
-    { id: '2', value: 'Option 2' },
-    // ... more items
-  ];
-const Login: React.FC = () => {
+
+import { ICountry, ICity, Country, State } from 'country-state-city';
+
+// Define the interface for dropdown items
+interface DropdownItem {
+    id: string;
+    value: string;
+  }
+const Signup: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
 
@@ -27,26 +25,48 @@ const Login: React.FC = () => {
 
     const [showPassword] = useState(false);
 
-    const api = useApi();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
-    const handleSelect = (item: any) => {
-        console.log('Selected:', item.value);
-      };
 
-    async function login() {
-        const {err, res} = await api.auth.login({ username, password });
-        if (err) return console.log(err);
+    const [selectedCountry, setSelectedCountry] = useState<DropdownItem | null>(null);
+    const [selectedCity, setSelectedCity] = useState<DropdownItem | null>(null);
 
-        const { token } = res?.data as { token: string };
+    const [countries, setCountries] = useState<DropdownItem[]>([]);
+    const [cities, setCities] = useState<DropdownItem[]>([]);
 
-        localStorage.setItem('token', token);
+    useEffect(() => {
+        const countryItems = Country.getAllCountries().map((country): DropdownItem => ({
+            id: country.isoCode,
+            value: country.name
+        }));
+        setCountries(countryItems);
+    }, []);
+    
 
-        await checkLoginStatus(dispatch, api);
-        navigate('/');
-    }
+    const handleCountrySelect = (item: DropdownItem) => {
+        const country = Country.getCountryByCode(item.id);
+        setSelectedCountry(item);
+    
+        setCities([]);
+        //if the country is selected set selected city to null
+        setSelectedCity(null);
+
+    
+        if (country) {
+            const cityItems = State.getStatesOfCountry
+            (country.isoCode).map((city): DropdownItem => ({
+                id: city.name,
+                value: city.name
+            }));
+            setCities(cityItems);
+        }
+    };
+    
+
+    const handleCitySelect = (item: DropdownItem) => {
+        const city = cities.find(c => c.id === item.id);
+        setSelectedCity(city as DropdownItem);
+    };
 
     return (
         <div className='page page__login'>
@@ -99,17 +119,31 @@ const Login: React.FC = () => {
 
                 </div>
                 <div className='form__location'>
-                    <PDropdown items={items} onSelect={handleSelect} placeholder="Select" label='Country' />
-                    <PDropdown items={items} onSelect={handleSelect} placeholder="Select" label='City' />
+                <PDropdown
+                    items={countries}
+                    onSelect={handleCountrySelect}
+                    placeholder="Select Country"
+                    label="Country"
+                    selectedValue={selectedCountry?.id}
+
+                />
+                <PDropdown
+                    items={cities}
+                    onSelect={handleCitySelect}
+                    placeholder="Select City"
+                    label="City"
+                    selectedValue={selectedCity?.id}
+                    disabled={!selectedCountry} // Disable the dropdown if no country is selected
+                />
 
                 </div>
             
                 <div className='form__actions'>
-                    <BaseButton title='Register' type='default' onClick={login} />
+                    <BaseButton title='Register' type='default' />
                 </div>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default Signup;
