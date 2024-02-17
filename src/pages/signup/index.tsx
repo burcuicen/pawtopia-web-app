@@ -10,12 +10,15 @@ import { RootState } from 'src/store';
 import PDropdown from 'src/components/p-dropdown';
 
 import {Country, State } from 'country-state-city';
+import { useApi } from 'src/api/api-context';
 
 interface DropdownItem {
     id: string;
     value: string;
   }
 const Signup: React.FC = () => {
+    const api = useApi();
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
 
@@ -64,6 +67,19 @@ const Signup: React.FC = () => {
         const city = cities.find(c => c.id === item.id);
         setSelectedCity(city as DropdownItem);
     };
+    async function register() {
+
+        const body = {
+            username,
+            email,
+            password,
+            country: selectedCountry?.id as string,
+            city: selectedCity?.id as string
+        }
+        const { err, res } = await api.auth.register(body);
+        if (err) return console.log(err);
+        console.log(res);
+    }
 
     return (
         <div className='page page__login'>
@@ -136,7 +152,7 @@ const Signup: React.FC = () => {
                 </div>
             
                 <div className='form__actions'>
-                    <BaseButton title='Register' type='default' />
+                    <BaseButton title='Register' type='default' onClick={register} />
                 </div>
             </div>
         </div>
