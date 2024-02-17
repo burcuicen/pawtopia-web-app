@@ -19,7 +19,7 @@
     background-color: var(--base-button-bg);
     color: var(--base-button-text-color);
 
-    border-radius: 57px;
+    border-radius: 8px;
     border: none;
 
     transition: background-color 0.3s ease-in-out;
@@ -40,6 +40,9 @@
         &:hover {
             --base-button-text-color: var(--color-white);
         }
+    }
+    &--rounded {
+        border-radius: 57px;
     }
 
 }

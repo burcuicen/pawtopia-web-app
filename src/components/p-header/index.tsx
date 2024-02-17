@@ -22,17 +22,17 @@ const PHeader: React.FC = () => {
 
     const renderNavLinks = () => (
         <>
-            <a href="/">Home</a>
-            <a href="/blog">Blog</a>
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
+            <a href="/" className='p-header__dropdown-item'>Home</a>
+            <a href="/blog" className='p-header__dropdown-item'>Blog</a>
+            <a href="/about" className='p-header__dropdown-item'>About</a>
+            <a href="/contact" className='p-header__dropdown-item'>Contact</a>
         </>
     );
 
     const renderActions = () => (
         <>
-            <BaseButton title='Login' type='default' onClick={() => navigate('/login')} />
-            <BaseButton title='Join' type='outline'  onClick={() => navigate('/login')} />
+            <BaseButton title='Login' type='default' onClick={() => navigate('/login')} rounded={true} />
+            <BaseButton title='Join' type='outline'  onClick={() => navigate('/login')} rounded={true} />
         </>
     );
 
@@ -46,7 +46,7 @@ const PHeader: React.FC = () => {
 
     const renderDropdown = () => (
         <div className='p-header__dropdown'>
-            <div className='p-header__dropdown-item'>{renderNavLinks()}</div>
+            <div className='p-header__dropdown-items'>{renderNavLinks()}</div>
             <div className='p-header__dropdown-actions'>{renderActions()}</div>
         </div>
     );

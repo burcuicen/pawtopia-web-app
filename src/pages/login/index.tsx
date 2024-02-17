@@ -10,7 +10,8 @@ import { checkLoginStatus } from 'src/helpers/auth';
 import BaseButton from 'src/components/_base/base-button';
 
 import PInput from 'src/components/p-input';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -20,6 +21,8 @@ const Login: React.FC = () => {
     const api = useApi();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
+    const isMobile = useSelector((state: RootState) => state.isMobile.value);
 
 
     async function login() {
@@ -37,9 +40,13 @@ const Login: React.FC = () => {
     return (
         <div className='page page__login'>
 
-            <div className='page__login-asset'>
-                <img src={require('../../assets/login-asset.svg').default} alt="Pawtopia" />
-            </div>
+            {
+                !isMobile && (
+                    <div className='page__login-asset'>
+                        <img src={require('../../assets/login-asset.svg').default} alt="Pawtopia" />
+                    </div>
+                )
+            }
           
             <div className='form form__login'>
                 <div className='form__login-title'>

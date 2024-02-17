@@ -57,6 +57,7 @@
     }
     &__dropdown {
         position: absolute;
+        z-index: 99999;
         top: 90px;
         left: 0;
         right: 0;
@@ -70,6 +71,18 @@
         gap: 24px;
         padding: 24px;
         box-shadow: 0px 4px 10px 0px #00000040;
+
+        background-color: var(--color-white);
+
+        &-items {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+            
+            gap: 24px;
+        }
 
         &-item {
             color: var(--primary);
