@@ -82,6 +82,7 @@ const PDropdown: React.FC<BaseDropdownProps> = ({
               {item.value}
             </div>
           ))}
+          {items.length === 0 && <div className="p-dropdown__item">No items to show</div>}
         </div>
       )}
     </div>

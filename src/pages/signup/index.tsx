@@ -9,9 +9,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/store';
 import PDropdown from 'src/components/p-dropdown';
 
-import { ICountry, ICity, Country, State } from 'country-state-city';
+import {Country, State } from 'country-state-city';
 
-// Define the interface for dropdown items
 interface DropdownItem {
     id: string;
     value: string;
@@ -37,7 +36,7 @@ const Signup: React.FC = () => {
     useEffect(() => {
         const countryItems = Country.getAllCountries().map((country): DropdownItem => ({
             id: country.isoCode,
-            value: country.name
+            value: `${country.flag}  ${country.name}`
         }));
         setCountries(countryItems);
     }, []);
@@ -48,15 +47,13 @@ const Signup: React.FC = () => {
         setSelectedCountry(item);
     
         setCities([]);
-        //if the country is selected set selected city to null
         setSelectedCity(null);
-
     
         if (country) {
             const cityItems = State.getStatesOfCountry
             (country.isoCode).map((city): DropdownItem => ({
-                id: city.name,
-                value: city.name
+                id:city.name,
+                value: `${city.name}(${city.isoCode})`
             }));
             setCities(cityItems);
         }
