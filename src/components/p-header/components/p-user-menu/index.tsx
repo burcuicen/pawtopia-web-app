@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import BaseIcon from 'src/components/_base/base-icon';
 import './styles.scss';
@@ -6,6 +7,7 @@ import './styles.scss';
 const PUserMenu: React.FC = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null); 
+    const navigate = useNavigate();
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
@@ -36,7 +38,7 @@ const PUserMenu: React.FC = () => {
                 <BaseIcon icon='mdi-light:format-list-checks' width={24} />
                 <span>Listings</span>
             </div>
-            <div className='p-user-menu-dropdown__nav'>
+            <div className='p-user-menu-dropdown__nav'  onClick={() => navigate('/logout')}>
                 <BaseIcon icon='material-symbols-light:logout' width={24} />
                 <span>Logout</span>
             </div>

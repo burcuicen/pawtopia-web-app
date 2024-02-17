@@ -8,11 +8,13 @@ import { useCheckLoginStatus } from 'src/helpers/auth';
 import MainLayout from 'src/layouts/main';
 import Landing from 'src/pages/landing';
 import Login from 'src/pages/login';
+import Logout from './pages/logout';
 
 const App: React.FC = () => {
   useCheckLoginStatus();
 
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,6 +35,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/logout" element={<Logout/>} />
         </Routes>
       </MainLayout>
     </Router>

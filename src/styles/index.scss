@@ -20,12 +20,42 @@ body {
   &__login {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-items: center;
   }
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  
   gap: 18px;
   width: 100%;
+  &__forgot-password {
+    display: flex;
+    gap: 8px;
+    a {
+      color: var(--primary);
+      font-weight: var(--font-medium);
+      text-decoration: none;
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+  }
+  &__login {
+    &-title {
+        font-size: 32px;
+        font-weight: 600;
+        color: var(--primary)
+    }
+    &-subtitle {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--dark-0)
+    }
+
+  }
 }

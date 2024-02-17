@@ -5,10 +5,11 @@ interface BaseButtonProps {
     title: string;
     type: 'default' | 'outline'
     size?: 'small' | 'medium' | 'large';
+    onClick?: () => void;
 }
-const BaseButton: React.FC<BaseButtonProps> = ({ title, type, size }) => {
+const BaseButton: React.FC<BaseButtonProps> = ({ title, type, size, onClick }) => {
     return (
-        <button className={`base-button base-button--${type} base-button--${size}`}>{title}</button>
+        <button className={`base-button base-button--${type} base-button--${size}`} onClick={onClick}>{title}</button>
     );
 }
 export default BaseButton;

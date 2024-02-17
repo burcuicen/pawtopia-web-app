@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/store';
+import { useNavigate } from 'react-router-dom';
+
 
 import BaseButton from 'src/components/_base/base-button';
 import BaseIcon from 'src/components/_base/base-icon';
@@ -13,6 +15,8 @@ const PHeader: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+
 
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -27,8 +31,8 @@ const PHeader: React.FC = () => {
 
     const renderActions = () => (
         <>
-            <BaseButton title='Login' type='default' />
-            <BaseButton title='Join' type='outline' />
+            <BaseButton title='Login' type='default' onClick={() => navigate('/login')} />
+            <BaseButton title='Join' type='outline'  onClick={() => navigate('/login')} />
         </>
     );
 
