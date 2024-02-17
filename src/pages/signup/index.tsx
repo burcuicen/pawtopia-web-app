@@ -72,11 +72,14 @@ const Signup: React.FC = () => {
         const body = {
             username,
             email,
+            firstName: username,//add field to the form
+            lastName: username,//add field to the form
             password,
+            userType: 'other',
             country: selectedCountry?.id as string,
             city: selectedCity?.id as string
         }
-        const { err, res } = await api.auth.register(body);
+        const { err, res } = await api.auth.register(body as any);
         if (err) return console.log(err);
         console.log(res);
     }
