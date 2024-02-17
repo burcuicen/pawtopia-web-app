@@ -47,6 +47,11 @@ body {
       text-decoration: none;
     }
   }
+  &__password {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 13px;
+  }
   &__actions {
     display: flex;
     justify-content: flex-end;
@@ -60,9 +65,9 @@ body {
         color: var(--primary)
     }
     &-subtitle {
-        font-size: 16px;
-        font-weight: 400;
-        color: var(--dark-0)
+      font-size: 15px;
+      font-weight: 400;
+      color: #242B33;
     }
 
   }

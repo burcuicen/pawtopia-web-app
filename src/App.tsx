@@ -9,6 +9,7 @@ import MainLayout from 'src/layouts/main';
 import Landing from 'src/pages/landing';
 import Login from 'src/pages/login';
 import Logout from './pages/logout';
+import Signup from 'src/pages/signup';
 
 const App: React.FC = () => {
   useCheckLoginStatus();
@@ -36,6 +37,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/logout" element={<Logout/>} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </MainLayout>
     </Router>

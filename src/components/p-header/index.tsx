@@ -32,7 +32,7 @@ const PHeader: React.FC = () => {
     const renderActions = () => (
         <>
             <BaseButton title='Login' type='default' onClick={() => navigate('/login')} rounded={true} />
-            <BaseButton title='Join' type='outline'  onClick={() => navigate('/login')} rounded={true} />
+            <BaseButton title='Join' type='outline'  onClick={() => navigate('/signup')} rounded={true} />
         </>
     );
 
