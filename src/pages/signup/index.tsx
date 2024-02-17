@@ -12,7 +12,12 @@ import BaseButton from 'src/components/_base/base-button';
 import PInput from 'src/components/p-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
-
+import PDropdown from 'src/components/p-dropdown';
+const items = [
+    { id: '1', value: 'Option 1' },
+    { id: '2', value: 'Option 2' },
+    // ... more items
+  ];
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -27,7 +32,9 @@ const Login: React.FC = () => {
     const dispatch = useDispatch();
     
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
-
+    const handleSelect = (item: any) => {
+        console.log('Selected:', item.value);
+      };
 
     async function login() {
         const {err, res} = await api.auth.login({ username, password });
@@ -89,6 +96,11 @@ const Login: React.FC = () => {
                         type={showPassword ? 'text' : 'password'}
                         hasHideIcon={true}
                     />
+
+                </div>
+                <div className='form__location'>
+                    <PDropdown items={items} onSelect={handleSelect} placeholder="Select" label='Country' />
+                    <PDropdown items={items} onSelect={handleSelect} placeholder="Select" label='City' />
 
                 </div>
             

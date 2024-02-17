@@ -52,6 +52,11 @@ body {
     grid-template-columns: 1fr 1fr;
     grid-gap: 13px;
   }
+  &__location  {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 13px;
+  }
   &__actions {
     display: flex;
     justify-content: flex-end;
