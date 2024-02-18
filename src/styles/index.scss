@@ -16,7 +16,7 @@ body {
   max-width: 1200px;
 
   @media screen and (min-width: 1600px) {
-    padding: var(--page-px-lg) var(--page-py-lg);
+    padding: var(--page-py-md) var(--page-px-md);
   }
   &__login {
     display: grid;
@@ -27,6 +27,7 @@ body {
     @media screen and (max-width: 768px) {
       grid-template-columns: 1fr;
       grid-gap: 0;
+      padding: 16px;
       
     }
   }
@@ -51,6 +52,9 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 13px;
+    @media screen and (max-width: 768px){
+      grid-template-columns: 1fr;
+    }
   }
   &__location  {
     display: grid;

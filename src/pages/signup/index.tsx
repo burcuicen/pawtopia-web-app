@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-
-import './styles.scss';
-
-import BaseButton from 'src/components/_base/base-button';
-
-import PInput from 'src/components/p-input';
 import { useSelector } from 'react-redux';
-import { RootState } from 'src/store';
-import PDropdown from 'src/components/p-dropdown';
 
 import {Country, State } from 'country-state-city';
+
+import { RootState } from 'src/store';
 import { useApi } from 'src/api/api-context';
+
+import BaseButton from 'src/components/_base/base-button';
+import PInput from 'src/components/p-input';
+import PDropdown from 'src/components/p-dropdown';
+
+import './styles.scss';
 
 interface DropdownItem {
     id: string;
@@ -18,6 +18,9 @@ interface DropdownItem {
   }
 const Signup: React.FC = () => {
     const api = useApi();
+
+    const isMobile = useSelector((state: RootState) => state.isMobile.value);
+
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -27,8 +30,8 @@ const Signup: React.FC = () => {
 
     const [showPassword] = useState(false);
 
-    
-    const isMobile = useSelector((state: RootState) => state.isMobile.value);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
     const [selectedCountry, setSelectedCountry] = useState<DropdownItem | null>(null);
     const [selectedCity, setSelectedCity] = useState<DropdownItem | null>(null);
@@ -42,11 +45,11 @@ const Signup: React.FC = () => {
             value: `${country.flag}  ${country.name}`
         }));
         setCountries(countryItems);
-    }, []);
+    }, [])
     
 
     const handleCountrySelect = (item: DropdownItem) => {
-        const country = Country.getCountryByCode(item.id);
+        const country = Country.getCountryByCode(item.id)
         setSelectedCountry(item);
     
         setCities([]);
@@ -60,28 +63,46 @@ const Signup: React.FC = () => {
             }));
             setCities(cityItems);
         }
-    };
-    
-
+    }
     const handleCitySelect = (item: DropdownItem) => {
         const city = cities.find(c => c.id === item.id);
         setSelectedCity(city as DropdownItem);
-    };
-    async function register() {
+    }
+    function setRegisterInfo() {
+        const errors = getFormErrors();
 
+        if (errors.length) {
+            alert(errors.join('\n'));
+            return;
+        }
         const body = {
             username,
             email,
-            firstName: username,//add field to the form
-            lastName: username,//add field to the form
+            firstName,
+            lastName,
             password,
             userType: 'other',
             country: selectedCountry?.id as string,
             city: selectedCity?.id as string
         }
-        const { err, res } = await api.auth.register(body as any);
-        if (err) return console.log(err);
-        console.log(res);
+        localStorage.setItem('registerInfo', JSON.stringify(body));  
+    }
+    function getFormErrors() {
+        const errors = [];
+        if (!username) errors.push('Username is required');
+        if (!email) errors.push('Email is required');
+        if (!firstName) errors.push('First Name is required');
+        
+        if (!lastName) errors.push('Last Name is required');
+        
+        if (!password || !confirmPassword ) errors.push('Password is required');
+        if (password !== confirmPassword) errors.push('Passwords do not match');
+
+        if (!selectedCountry) errors.push('Country is required');
+        
+        if (!selectedCity) errors.push('City is required');
+        
+        return errors;
     }
 
     return (
@@ -114,6 +135,18 @@ const Signup: React.FC = () => {
                     onChange={setEmail}
                     placeholder="Email"
                     type='email'
+                />
+                 <PInput
+                    label='First Name'
+                    value={firstName}
+                    onChange={setFirstName}
+                    placeholder="First Name"
+                />
+                 <PInput
+                    label='Last Name'
+                    value={lastName}
+                    onChange={setLastName}
+                    placeholder="Last Name"
                 />
                 <div className='form__password'>
                     <PInput
@@ -151,11 +184,9 @@ const Signup: React.FC = () => {
                     selectedValue={selectedCity?.id}
                     disabled={!selectedCountry} // Disable the dropdown if no country is selected
                 />
-
                 </div>
-            
                 <div className='form__actions'>
-                    <BaseButton title='Register' type='default' onClick={register} />
+                    <BaseButton title='Register' type='default' onClick={setRegisterInfo} />
                 </div>
             </div>
         </div>
