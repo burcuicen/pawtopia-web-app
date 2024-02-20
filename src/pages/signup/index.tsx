@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import {Country, State } from 'country-state-city';
 
 import { RootState } from 'src/store';
-import { useApi } from 'src/api/api-context';
 
 import BaseButton from 'src/components/_base/base-button';
 import PInput from 'src/components/p-input';
@@ -17,16 +16,16 @@ interface DropdownItem {
     value: string;
   }
 const Signup: React.FC = () => {
-    const api = useApi();
-
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
-
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const [showPassword] = useState(false);
 
@@ -71,7 +70,24 @@ const Signup: React.FC = () => {
         setSelectedCity(city as DropdownItem);
     }
     function setRegisterInfo() {
+        setPasswordError('');
+        setConfirmPasswordError('');
+
+        let isValid = true;
+
+        if (!password) {
+            setPasswordError('Password is required');
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            setPasswordError('Passwords do not match');
+            setConfirmPasswordError('Passwords do not match');
+            isValid = false;
+        }
+
         setValidateForm(true);
+
+        if (!isValid) return
+
         const body = {
             username,
             email,
@@ -144,8 +160,7 @@ const Signup: React.FC = () => {
                         placeholder="Enter Password"
                         type={showPassword ? 'text' : 'password'}
                         hasHideIcon={true}
-                        required={true}
-                        validateForm={validateForm}
+                        customError={passwordError}
                     />
                      <PInput
                         label='Confirm Password'
@@ -154,8 +169,7 @@ const Signup: React.FC = () => {
                         placeholder="Confirm Password"
                         type={showPassword ? 'text' : 'password'}
                         hasHideIcon={true}
-                        required={true}
-                        validateForm={validateForm}
+                        customError={confirmPasswordError}
                     />
 
                 </div>
@@ -173,7 +187,7 @@ const Signup: React.FC = () => {
                     placeholder="Select City"
                     label="City"
                     selectedValue={selectedCity?.id}
-                    disabled={!selectedCountry} // Disable the dropdown if no country is selected
+                    disabled={!selectedCountry}
                 />
                 </div>
                 <div className='form__actions'>
