@@ -14,7 +14,8 @@ interface BaseDropdownProps {
   placeholder?: string;
   label?: string;
   disabled?: boolean;
-  selectedValue?: string; // This will be the id of the selected item
+  selectedValue?: string;
+  required?: boolean;
 }
 
 const PDropdown: React.FC<BaseDropdownProps> = ({
@@ -24,12 +25,12 @@ const PDropdown: React.FC<BaseDropdownProps> = ({
   label,
   disabled,
   selectedValue,
+  required,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Effect for handling external changes to selected value
   useEffect(() => {
     if (selectedValue) {
       const selected = items.find(item => item.id === selectedValue);
@@ -37,7 +38,7 @@ const PDropdown: React.FC<BaseDropdownProps> = ({
         setSelectedItem(selected);
       }
     } else {
-      setSelectedItem(null); // This handles resetting the dropdown when selectedValue is null
+      setSelectedItem(null);
     }
   }, [selectedValue, items]);
 
