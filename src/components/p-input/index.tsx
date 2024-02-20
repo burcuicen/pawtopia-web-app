@@ -8,23 +8,36 @@ interface PInputProps {
     placeholder?: string;
     label?: string;
     hasHideIcon?: boolean;
-    error?: string;
     type?: string;
+    required?: boolean; // New prop to specify if the input is required
+    validateForm?: boolean; // New prop to trigger validation from the parent component
 }
 
-const PInput: React.FC<PInputProps> = ({ value, onChange, placeholder, label, hasHideIcon, error, type = 'text' }) => {
+const PInput: React.FC<PInputProps> = ({ value, onChange, placeholder, label, hasHideIcon, type = 'text', required, validateForm }) => {
     const [inputValue, setInputValue] = useState(value);
     const [inputType, setInputType] = useState(type);
+
+    const [error, setError] = useState(''); // Internal state for validation error
 
     useEffect(() => {
         setInputValue(value);
     }, [value]);
-
+    useEffect(() => {
+        if (validateForm) {
+            validateInput();
+        }
+    }, [validateForm]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
         onChange(e.target.value);
     };
-
+    const validateInput = (currentValue = inputValue) => {
+        if (required && !currentValue) {
+            setError('This field is required');
+        } else {
+            setError('');
+        }
+    };
     const togglePasswordVisibility = () => {
         setInputType(inputType === 'password' ? 'text' : 'password');
     };
@@ -38,7 +51,8 @@ const PInput: React.FC<PInputProps> = ({ value, onChange, placeholder, label, ha
                     placeholder={placeholder}
                     value={inputValue}
                     onChange={handleChange}
-                    className='p-input__input'
+                    className={`p-input__input ${error ? 'error' : ''}`}
+                    required={required}
                 />
                 {hasHideIcon && type === 'password' && (
                     <div className='p-input__icon'>

@@ -39,6 +39,8 @@ const Signup: React.FC = () => {
     const [countries, setCountries] = useState<DropdownItem[]>([]);
     const [cities, setCities] = useState<DropdownItem[]>([]);
 
+    const [validateForm, setValidateForm] = useState(false);
+
     useEffect(() => {
         const countryItems = Country.getAllCountries().map((country): DropdownItem => ({
             id: country.isoCode,
@@ -69,12 +71,7 @@ const Signup: React.FC = () => {
         setSelectedCity(city as DropdownItem);
     }
     function setRegisterInfo() {
-        const errors = getFormErrors();
-
-        if (errors.length) {
-            alert(errors.join('\n'));
-            return;
-        }
+        setValidateForm(true);
         const body = {
             username,
             email,
@@ -86,23 +83,6 @@ const Signup: React.FC = () => {
             city: selectedCity?.id as string
         }
         localStorage.setItem('registerInfo', JSON.stringify(body));  
-    }
-    function getFormErrors() {
-        const errors = [];
-        if (!username) errors.push('Username is required');
-        if (!email) errors.push('Email is required');
-        if (!firstName) errors.push('First Name is required');
-        
-        if (!lastName) errors.push('Last Name is required');
-        
-        if (!password || !confirmPassword ) errors.push('Password is required');
-        if (password !== confirmPassword) errors.push('Passwords do not match');
-
-        if (!selectedCountry) errors.push('Country is required');
-        
-        if (!selectedCity) errors.push('City is required');
-        
-        return errors;
     }
 
     return (
@@ -128,6 +108,8 @@ const Signup: React.FC = () => {
                     value={username}
                     onChange={setUsername}
                     placeholder="Username"
+                    required={true}
+                    validateForm={validateForm}
                 />
                  <PInput
                     label='Email'
@@ -135,18 +117,24 @@ const Signup: React.FC = () => {
                     onChange={setEmail}
                     placeholder="Email"
                     type='email'
+                    required={true}
+                    validateForm={validateForm}
                 />
                  <PInput
                     label='First Name'
                     value={firstName}
                     onChange={setFirstName}
                     placeholder="First Name"
+                    required={true}
+                    validateForm={validateForm}
                 />
                  <PInput
                     label='Last Name'
                     value={lastName}
                     onChange={setLastName}
                     placeholder="Last Name"
+                    required={true}
+                    validateForm={validateForm}
                 />
                 <div className='form__password'>
                     <PInput
@@ -156,6 +144,8 @@ const Signup: React.FC = () => {
                         placeholder="Enter Password"
                         type={showPassword ? 'text' : 'password'}
                         hasHideIcon={true}
+                        required={true}
+                        validateForm={validateForm}
                     />
                      <PInput
                         label='Confirm Password'
@@ -164,6 +154,8 @@ const Signup: React.FC = () => {
                         placeholder="Confirm Password"
                         type={showPassword ? 'text' : 'password'}
                         hasHideIcon={true}
+                        required={true}
+                        validateForm={validateForm}
                     />
 
                 </div>
@@ -174,7 +166,6 @@ const Signup: React.FC = () => {
                     placeholder="Select Country"
                     label="Country"
                     selectedValue={selectedCountry?.id}
-
                 />
                 <PDropdown
                     items={cities}
