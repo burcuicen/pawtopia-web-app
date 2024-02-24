@@ -1,0 +1,64 @@
+.p-stepper {
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__circle {
+        cursor: pointer;
+        position: relative;
+  
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        width: 32px;
+        height: 32px;
+  
+        border-radius: 50%;
+        border: 2px solid #D1D5DB;
+        
+        background-color: var(--color-white);
+
+        &--active {
+            border-color: var(--primary);
+            background-color: var(--color-white);
+
+            &::before {
+                position: absolute;
+                content: '';
+
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+
+                width: 10px;
+                height: 10px;
+
+                border-radius: 50%;
+                background-color: var(--primary);
+            }
+        }
+        &--done {
+            border-color: var(--primary);
+            background-color: var(--primary);
+
+            .p-stepper__checkmark {
+                display: block;
+            }
+        }
+    }
+    &__line {
+        flex-grow: 1;
+
+        height: 2px;
+        width: 80px;
+        
+        background-color: #D1D5DB; 
+    }
+    &__checkmark {
+        color: var(--color-white);
+        position: absolute;
+    }
+  }
+  
