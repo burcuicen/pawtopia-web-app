@@ -16,6 +16,7 @@ interface BaseDropdownProps {
   disabled?: boolean;
   selectedValue?: string;
   required?: boolean;
+  validateForm?: boolean;
 }
 
 const PDropdown: React.FC<BaseDropdownProps> = ({
@@ -26,11 +27,21 @@ const PDropdown: React.FC<BaseDropdownProps> = ({
   disabled,
   selectedValue,
   required,
+  validateForm
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (validateForm) validateInput();
+}, [validateForm])
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const validateInput = (currentValue = selectedItem) => {
+    if (required && !currentValue) setError('This field is required');
+    else setError('');
+};
   useEffect(() => {
     if (selectedValue) {
       const selected = items.find(item => item.id === selectedValue);
@@ -86,6 +97,7 @@ const PDropdown: React.FC<BaseDropdownProps> = ({
           {items.length === 0 && <div className="p-dropdown__item">No items to show</div>}
         </div>
       )}
+      {error && <div className='p-input__error'>{error}</div>}
     </div>
   );
 };

@@ -180,6 +180,8 @@ const Signup: React.FC = () => {
                     placeholder="Select Country"
                     label="Country"
                     selectedValue={selectedCountry?.id}
+                    required={true}
+                    validateForm={validateForm}
                 />
                 <PDropdown
                     items={cities}
@@ -188,6 +190,8 @@ const Signup: React.FC = () => {
                     label="City"
                     selectedValue={selectedCity?.id}
                     disabled={!selectedCountry}
+                    required={true}
+                    validateForm={validateForm}
                 />
                 </div>
                 <div className='form__actions'>
