@@ -1,7 +1,11 @@
 import React, {  useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { PAW_SEEKER_STEPS, PAW_GUARD_STEPS, OTHER_STEPS } from './constants';
+
 import PStepper from 'src/components/p-stepper';
+import SurveyCard from './components/survey-card';
+
 import './styles.scss';
 
 interface RegisterInfo {
@@ -15,7 +19,10 @@ interface RegisterInfo {
 const SurveyPage: React.FC = () => {
     const navigate = useNavigate();
 
-    const totalSteps = 5;
+
+    const [steps, setSteps] = useState(PAW_SEEKER_STEPS);
+
+    const totalSteps = steps.length;
     const [activeStep, setActiveStep] = useState(1);
 
     const [firstName, setFirstName] = useState('');
@@ -25,10 +32,49 @@ const SurveyPage: React.FC = () => {
         if (registerInfo?.firstName) setFirstName(registerInfo.firstName);
         else navigate('/signup');
     }, []);
+    
 
     const handleStepChange = (step:number) => {
         setActiveStep(step);
     };
+    const handlePrevStep = () => {
+        if (activeStep > 1) {
+            setActiveStep(activeStep - 1);
+        }
+    };
+
+    const handleNextStep = () => {
+        if (activeStep < totalSteps) {
+            setActiveStep(activeStep + 1);
+        }
+    };
+    const [surveyData, setSurveyData] = useState({
+        purpose: '',
+        animalPreference: '',
+        ageRange: '',
+        genderPreference: '',
+        healthStatus: '',
+        animalCareHistory: '',
+        reason: '',
+    });
+     const setSelectionData = (data: string) => {
+        setSurveyData({ ...surveyData, [steps[activeStep - 1].questionField]: data });
+    }
+    useEffect(() => {
+        switch(surveyData.purpose) {
+            case 'looking-pet':
+                setSteps(PAW_SEEKER_STEPS);
+                break;
+            case 'looking-guardian':
+                setSteps(PAW_GUARD_STEPS);
+                break;
+            case 'other':
+                setSteps(OTHER_STEPS);
+                break;
+            default:
+                break;
+        }
+    }, [surveyData.purpose]);
 
     return (
         <div className="page page__survey">
@@ -43,6 +89,9 @@ const SurveyPage: React.FC = () => {
                 </div>
                 <div className="page__survey-subtitle">
                     Welcome to the Pawtopia family! Where paws and hearts meet. Let's get to know you a bit better!
+                </div>
+                <div className="page__survey-card">
+                    <SurveyCard cardData={steps[activeStep - 1]} setData={setSelectionData} selectedAnswer={surveyData[steps[activeStep - 1].questionField]}  onPrev={handlePrevStep} onNext={handleNextStep} />
                 </div>
             </div>
         </div>

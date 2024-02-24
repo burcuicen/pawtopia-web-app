@@ -25,4 +25,62 @@
         max-width: 768px;
         color: #4C5A5F;
     }
+    &-card {
+        width: 100%;
+    }
+    .survey-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        max-width: 736px;
+        height: 306px;
+
+        background-color: var(--color-white);
+        box-shadow: 0px 4px 25px -4px #00000040;
+        border-radius: 8px;
+
+        padding-top: 32px;
+        padding-left: 40px;
+        padding-right: 40px;
+        &__container {
+            display: flex;
+            justify-content: space-between;
+
+            height: 100%;
+            width: 100%;
+        }
+        &__navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          
+            cursor: pointer;
+            
+            &-item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+    
+                background-color: var(--primary);
+                border-radius: 50%;
+
+                color: var(--color-white);
+
+                width: 44px;
+                height: 44px;
+            }
+        }
+        &__content {
+            display: flex;
+
+            flex-direction: column;
+            gap: 24px;
+        }
+        &__question {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 500;
+        }
+    }
 }
