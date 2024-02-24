@@ -1,0 +1,47 @@
+.radio-group {
+    /* Container styles */
+}
+
+.radio-option {
+    margin-bottom: 10px; /* space between options */
+}
+
+.radio-input {
+    opacity: 0; /* hide the default radio button */
+    position: fixed; /* remove the input from the document flow */
+    width: 0;
+}
+
+.radio-label {
+    position: relative;
+    padding-left: 35px; /* space for the custom radio button */
+    cursor: pointer;
+    display: inline-block;
+    line-height: 25px; /* adjust to center text vertically */
+}
+
+.radio-label:before, .radio-label:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+}
+
+.radio-label:before {
+    width: 25px; /* outer circle size */
+    height: 25px;
+    border: 2px solid purple; /* outer circle color */
+}
+
+.radio-label:after {
+    width: 15px; /* inner circle size */
+    height: 15px;
+    background-color: purple; /* inner circle color */
+    opacity: 0; /* hide the inner circle by default */
+}
+
+.radio-input:checked + .radio-label:after {
+    opacity: 1; /* show the inner circle when checked */
+}

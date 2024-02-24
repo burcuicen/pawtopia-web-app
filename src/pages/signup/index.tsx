@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import {Country, State } from 'country-state-city';
 
@@ -17,6 +18,8 @@ interface DropdownItem {
   }
 const Signup: React.FC = () => {
     const isMobile = useSelector((state: RootState) => state.isMobile.value);
+    const navigate = useNavigate();
+
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -98,7 +101,8 @@ const Signup: React.FC = () => {
             country: selectedCountry?.id as string,
             city: selectedCity?.id as string
         }
-        localStorage.setItem('registerInfo', JSON.stringify(body));  
+        localStorage.setItem('registerInfo', JSON.stringify(body));
+        navigate('/onboarding');
     }
 
     return (
