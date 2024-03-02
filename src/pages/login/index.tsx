@@ -27,7 +27,7 @@ const Login: React.FC = () => {
 
     async function login() {
         const {err, res} = await api.auth.login({ username, password });
-        if (err) return console.log(err);
+        if (err) return
 
         const { token } = res?.data as { token: string };
 
