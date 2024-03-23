@@ -49,9 +49,28 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ cardData, setData, selectedAnsw
                     </div>
                </div>     
     }
+    const renderCustomQuestion = () => {
+        return <div className='survey-card__container'>
+        <div className='survey-card__navigation' onClick={onPrev}>
+            <div className='survey-card__navigation-item'>
+                <BaseIcon icon='material-symbols:chevron-left' width={24} />
+            </div>
+        </div>
+        <div className='survey-card__content'>
+            <div className="survey-card__question">{cardData.question}</div>
+        </div>
+        <div className='survey-card__navigation' onClick={onNext}>
+            <div className='survey-card__navigation-item'>
+                <BaseIcon icon='material-symbols:chevron-right' width={24} />
+            </div>
+        </div>
+   </div>     
+
+    }
     return (
         <div className="survey-card">
             {cardData.answerType === 'radio' && renderRadioQuestion()}
+            {cardData.answerType === 'custom' && renderCustomQuestion()}
            
         </div>
     );
