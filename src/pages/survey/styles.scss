@@ -43,6 +43,7 @@
         padding-top: 32px;
         padding-left: 40px;
         padding-right: 40px;
+
         &__container {
             display: flex;
             justify-content: space-between;
@@ -82,5 +83,86 @@
             font-size: 24px;
             font-weight: 500;
         }
+        &__option {
+            display: grid;
+            align-items: center;
+            grid-template-columns: 120px 1fr;
+            &-range {
+                align-items: baseline;
+            }
+            &-label {
+                font-family: var(--font-family);
+                font-size: 15px;
+                font-weight: 500;
+                color: #000000
+            }
+        }
+        &__custom-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        
+        }
     }
+    .age-range-slider {
+        width: 220px;
+        position: relative;
+      
+        .slider {
+          -webkit-appearance: none;
+
+          width: 220px;
+          height: 13px;
+
+          border-radius: 16px;
+          background: #BEE9E8;
+          outline: none;
+          
+          &::-webkit-slider-thumb {
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+
+            -webkit-appearance: none;
+            appearance: none;
+
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+            background: #3C096C;
+          }
+          
+          &::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3C096C;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+          }
+        }
+      
+        .slider-progress {
+          position: absolute;
+          height: 13px;
+          background: #3C096C;
+          border-radius: 16px 0 0 16px;
+          top: 3px;
+          left: 0;
+          pointer-events: none;
+        }
+      
+        .slider-label {
+          margin-top: 5px;
+
+          font-size: 12px;
+          font-weight: 500;
+          font-family: var(--font-family);
+
+          color:#3C096C;
+          text-align: center;
+        }
+      }
 }
