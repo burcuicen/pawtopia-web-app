@@ -18,48 +18,49 @@ interface RegisterInfo {
 }
 const SurveyPage: React.FC = () => {
     const navigate = useNavigate();
-
-
+    
     const [steps, setSteps] = useState(PAW_SEEKER_STEPS);
-
     const totalSteps = steps.length;
     const [activeStep, setActiveStep] = useState(1);
-
+    
     const [firstName, setFirstName] = useState('');
-
+    
     useEffect(() => {
         const registerInfo = JSON.parse(localStorage.getItem('registerInfo') as string) as RegisterInfo;
         if (registerInfo?.firstName) setFirstName(registerInfo.firstName);
         else navigate('/signup');
     }, []);
     
-
     const handleStepChange = (step:number) => {
         setActiveStep(step);
     };
+
     const handlePrevStep = () => {
         if (activeStep > 1) {
             setActiveStep(activeStep - 1);
         }
     };
-
+    
     const handleNextStep = () => {
         if (activeStep < totalSteps) {
             setActiveStep(activeStep + 1);
         }
     };
+
     const [surveyData, setSurveyData] = useState({
         purpose: '',
         animalPreference: '',
-        ageRange: '',
+        ageRange: 0,
         genderPreference: '',
         healthStatus: '',
         animalCareHistory: '',
         reason: '',
     });
-     const setSelectionData = (data: string) => {
-        setSurveyData({ ...surveyData, [steps[activeStep - 1].questionField]: data });
+    
+    const setSelectionData = (field: string, data: string) => {
+        setSurveyData({ ...surveyData, [field]: data });
     }
+
     useEffect(() => {
         switch(surveyData.purpose) {
             case 'looking-pet':
@@ -75,7 +76,7 @@ const SurveyPage: React.FC = () => {
                 break;
         }
     }, [surveyData.purpose]);
-
+    
     return (
         <div className="page page__survey">
             <div className='page__survey-heading'>
@@ -84,14 +85,21 @@ const SurveyPage: React.FC = () => {
                     activeStep={activeStep}
                     onStepChange={handleStepChange}
                 />
-                 <div className="page__survey-title">
+                
+                <div className="page__survey-title">
                     Hello, {firstName}
                 </div>
                 <div className="page__survey-subtitle">
                     Welcome to the Pawtopia family! Where paws and hearts meet. Let's get to know you a bit better!
                 </div>
                 <div className="page__survey-card">
-                    <SurveyCard cardData={steps[activeStep - 1]} setData={setSelectionData} selectedAnswer={surveyData[steps[activeStep - 1].questionField]}  onPrev={handlePrevStep} onNext={handleNextStep} />
+                    <SurveyCard 
+                        cardData={steps[activeStep - 1]} 
+                        setData={setSelectionData} 
+                        selectedAnswers={surveyData}  
+                        onPrev={handlePrevStep} 
+                        onNext={handleNextStep} 
+                    />
                 </div>
             </div>
         </div>
