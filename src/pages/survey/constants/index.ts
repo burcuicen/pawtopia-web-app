@@ -49,13 +49,11 @@ export const PAW_SEEKER_STEPS = [
         customOptions: {
             gender: [
                 {key: 'male', label: 'Male'},
-                {key: 'female', label: 'Female'},
-                {key: 'doesnt-matter', label: "Doesn't matter"}
+                {key: 'female', label: 'Female'}
             ],
             healthStatus: [
                 {key: 'healthy', label: 'Healthy'},
-                {key: 'special-needs', label: 'Special needs'},
-                {key: 'doesnt-matter', label: "Doesn't matter"}
+                {key: 'special-needs', label: 'Special needs'}
             ]
         }
     },
