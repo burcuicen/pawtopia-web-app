@@ -5,12 +5,12 @@ type PRadioButtonProps = {
     options: Array<{ key: string, label: string }>;
     onSelectionChange: (selectedKey: string) => void;
     selectedOption?: string;
+    layout?: 'horizontal' | 'vertical';
 };
 
-const PRadioButton: React.FC<PRadioButtonProps> = ({ options, onSelectionChange, selectedOption }) => {
+const PRadioButton: React.FC<PRadioButtonProps> = ({ options, onSelectionChange, selectedOption, layout = 'horizontal' }) => {
     const [selected, setSelected] = useState('');
 
-    // Update the selected state when the selectedOption prop changes
     useEffect(() => {
         if (selectedOption) {
             setSelected(selectedOption);
@@ -21,15 +21,17 @@ const PRadioButton: React.FC<PRadioButtonProps> = ({ options, onSelectionChange,
         setSelected(key);
         onSelectionChange(key);
     };
-
+    const generateRandomId = () => {
+        return Math.random().toString(36).substring(7);
+    }
     return (
-        <div className="p-radio-group">
+        <div className={`p-radio-group p-radio-group--${layout}`}>
             {options.map(option => (
                 <div key={option.key} className="p-radio-group__option">
                     <input
                         type="radio"
                         id={option.key}
-                        name="custom-radio"
+                        name={generateRandomId()} // use the name prop
                         value={option.key}
                         checked={selected === option.key}
                         onChange={() => handleChange(option.key)}
