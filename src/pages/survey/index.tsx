@@ -5,6 +5,7 @@ import { PAW_SEEKER_STEPS, PAW_GUARD_STEPS, OTHER_STEPS } from "./constants";
 
 import PStepper from "src/components/p-stepper";
 import SurveyCard from "./components/survey-card";
+import { AgeCategory } from "./components/range-slider";
 
 import "./styles.scss";
 
@@ -55,15 +56,15 @@ const SurveyPage: React.FC = () => {
   const [surveyData, setSurveyData] = useState({
     purpose: "",
     animalPreference: "",
-    ageRange: 0,
+    ageRange: "adult" as AgeCategory,
     genderPreference: "",
     healthStatus: "",
     animalCareHistory: "",
     reason: "",
   });
 
-  const setSelectionData = (field: string, data: string) => {
-    setSurveyData({ ...surveyData, [field]: data });
+  const setSelectionData = (field: string, data: string | AgeCategory) => {
+    setSurveyData((prevData) => ({ ...prevData, [field]: data }));
   };
 
   useEffect(() => {
@@ -86,6 +87,7 @@ const SurveyPage: React.FC = () => {
     setIsLoading(true);
     console.log("Survey Data:", surveyData);
     try {
+      // Here you would typically send the survey data to your backend
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsSuccess(true);
     } catch (error) {
