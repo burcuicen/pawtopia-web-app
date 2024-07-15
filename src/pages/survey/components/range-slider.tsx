@@ -1,13 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import 'src/pages/survey/styles.scss';
+import React, { useEffect, useState, useRef } from "react";
+import "src/pages/survey/styles.scss";
+
+export type AgeCategory = "baby" | "adult" | "senior";
 
 interface AgeRangeSliderProps {
-  onChange: (value: number) => void;
-  initialValue?: number;
+  onChange: (value: AgeCategory) => void;
+  initialValue?: number | AgeCategory;
 }
 
-const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({ onChange, initialValue = 0 }) => {
-  const [value, setValue] = useState(initialValue);
+export const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({
+  onChange,
+  initialValue = "adult",
+}) => {
+  const [value, setValue] = useState(
+    typeof initialValue === "number"
+      ? initialValue
+      : getInitialNumericValue(initialValue)
+  );
   const sliderRef = useRef<HTMLInputElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -18,7 +27,7 @@ const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({ onChange, initialValue 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value);
     setValue(newValue);
-    onChange(newValue);
+    onChange(getAgeCategory(newValue));
   };
 
   const updateSliderProgress = () => {
@@ -28,11 +37,15 @@ const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({ onChange, initialValue 
     }
   };
 
-  const getAgeLabel = (value: number) => {
-    if (value <= 25) return 'Baby';
-    if (value <= 50) return 'Young';
-    if (value <= 75) return 'Adult';
-    return 'Senior';
+  const getAgeCategory = (value: number): AgeCategory => {
+    if (value <= 33) return "baby";
+    if (value <= 66) return "adult";
+    return "senior";
+  };
+
+  const getAgeLabel = (value: number): string => {
+    const category = getAgeCategory(value);
+    return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
   return (
@@ -51,5 +64,18 @@ const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({ onChange, initialValue 
     </div>
   );
 };
+
+export function getInitialNumericValue(category: AgeCategory): number {
+  switch (category) {
+    case "baby":
+      return 16;
+    case "adult":
+      return 50;
+    case "senior":
+      return 83;
+    default:
+      return 50;
+  }
+}
 
 export default AgeRangeSlider;
