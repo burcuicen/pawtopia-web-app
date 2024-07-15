@@ -1,64 +1,81 @@
 .p-input {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  label {
+    margin-bottom: 10px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #242b33;
+  }
+
+  &__field {
     position: relative;
-  
-    label {
-      margin-bottom: 10px;
 
-      font-size: 14px;
-      font-weight: 500;
-      
-      color: #242B33;
+    display: flex;
+    align-items: center;
+
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+
+    background-color: var(--color-white);
+  }
+  &__input {
+    flex-grow: 1;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary-light);
     }
-  
-    &__field {
-      position: relative;
 
-      display: flex;
-      align-items: center;
-
-      border: 1px solid var(--primary);
-      border-radius: 8px;
-
-      background-color: var(--color-white);
-    }
-    &__input {
-        flex-grow: 1;
-
-        padding: 14px;
-
-        border: none;
-        border-radius: 8px;
-
-        font-size: 14px;
-  
-        &:focus {
-          outline: none;
-          box-shadow: 0 0 0 2px var(--primary-light);
-        }
-  
-        &::placeholder {
-          color: #99A2A5;
-        }
-      }
-  
-      &__icon {
-        cursor: pointer;
-
-        position: absolute;
-        right: 14px;
-
-        display: flex;
-        align-items: center;
-
-        color: var(--primary);
-      }
-  
-    &__error {
-      margin-top: 4px;
-      font-size: 14px;
-      color: #FF0000;
+    &::placeholder {
+      color: #99a2a5;
     }
   }
-  
+  &__textarea {
+    flex-grow: 1;
+    padding: 14px 28px;
+
+    border: 1px solid #99a2a5;
+
+    height: 167px;
+
+    font-family: var(--font-family);
+    font-weight: 500;
+    font-size: 14px;
+
+    color: #242b33;
+
+    &::placeholder {
+      color: #99a2a5;
+    }
+  }
+
+  &__icon {
+    cursor: pointer;
+
+    position: absolute;
+    right: 14px;
+
+    display: flex;
+    align-items: center;
+
+    color: var(--primary);
+  }
+
+  &__error {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #ff0000;
+  }
+}
