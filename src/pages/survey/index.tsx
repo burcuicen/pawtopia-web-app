@@ -40,6 +40,12 @@ const SurveyPage: React.FC = () => {
   }, []);
 
   const handleStepChange = (step: number) => {
+    if (
+      steps[activeStep - 1].required &&
+      !surveyData[steps[activeStep - 1].questionField]
+    ) {
+      return;
+    }
     setActiveStep(step);
   };
 
@@ -59,8 +65,8 @@ const SurveyPage: React.FC = () => {
     purpose: "",
     animalPreference: "",
     ageRange: "adult" as AgeCategory,
-    genderPreference: "",
-    healthStatus: "",
+    genderPreference: "male",
+    healthStatus: "healthy",
     animalCareHistory: "",
     reason: "",
   });
@@ -88,6 +94,7 @@ const SurveyPage: React.FC = () => {
   const handleSurveySubmit = async () => {
     setIsLoading(true);
     console.log("Survey Data:", surveyData);
+    //TODO: SEND IT TO API
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsSuccess(true);
@@ -97,7 +104,19 @@ const SurveyPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+  const handleNext = () => {
+    if (
+      steps[activeStep - 1].required &&
+      !surveyData[steps[activeStep - 1].questionField]
+    ) {
+      return;
+    }
+    if (activeStep === totalSteps) {
+      handleSurveySubmit();
+    } else {
+      handleNextStep();
+    }
+  };
   return (
     <div className="page page__survey">
       {isSuccess ? (
@@ -121,9 +140,7 @@ const SurveyPage: React.FC = () => {
               setData={setSelectionData}
               selectedAnswers={surveyData}
               onPrev={handlePrevStep}
-              onNext={
-                activeStep === totalSteps ? handleSurveySubmit : handleNextStep
-              }
+              onNext={handleNext}
             />
           </div>
         </div>
