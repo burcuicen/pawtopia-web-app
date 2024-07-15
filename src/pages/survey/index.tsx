@@ -8,6 +8,7 @@ import SurveyCard from "./components/survey-card";
 import { AgeCategory } from "./components/range-slider";
 
 import "./styles.scss";
+import SurveyLoadingScreen from "./components/survey-loading";
 
 interface RegisterInfo {
   username: string;
@@ -17,6 +18,7 @@ interface RegisterInfo {
   password: string;
   userType: string;
 }
+type ProfileType = "looking-pet" | "looking-guardian" | "other";
 
 const SurveyPage: React.FC = () => {
   const navigate = useNavigate();
@@ -87,7 +89,6 @@ const SurveyPage: React.FC = () => {
     setIsLoading(true);
     console.log("Survey Data:", surveyData);
     try {
-      // Here you would typically send the survey data to your backend
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsSuccess(true);
     } catch (error) {
@@ -99,23 +100,8 @@ const SurveyPage: React.FC = () => {
 
   return (
     <div className="page page__survey">
-      {isLoading ? (
-        <div className="loading-screen">
-          <div className="loading-spinner"></div>
-          <p>Loading...</p>
-        </div>
-      ) : isSuccess ? (
-        <div className="success-screen">
-          <h2>Thank You for Your Paw-ticipation!</h2>
-          <p>
-            Hang tight while we fetch the purr-fect companions for you! You're
-            just a whisker away from meeting your ideal paw friend.
-          </p>
-          <img
-            src={require("../../assets/person-with-cat.svg").default}
-            alt="Pawtopia"
-          />
-        </div>
+      {isSuccess ? (
+        <SurveyLoadingScreen profileType={surveyData.purpose as ProfileType} />
       ) : (
         <div className="page__survey-heading">
           <PStepper
