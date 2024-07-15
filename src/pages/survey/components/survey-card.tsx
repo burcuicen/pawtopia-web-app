@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PRadioButton from "src/components/p-radio-button";
 import BaseIcon from "src/components/_base/base-icon";
-import AgeRangeSlider from "./range-slider";
+import AgeRangeSlider, { AgeCategory } from "./range-slider";
 import "src/pages/survey/styles.scss";
 import PInput from "src/components/p-input";
 
@@ -28,9 +28,9 @@ interface SurveyCardProps {
 
 interface SurveyPageProps {
   cardData: SurveyCardProps;
-  setData?: (field: string, data: string) => void;
+  setData?: (field: string, data: string | AgeCategory) => void;
   selectedAnswers?: {
-    ageRange?: number;
+    ageRange?: AgeCategory;
     genderPreference?: string;
     healthStatus?: string;
     reason?: string;
@@ -46,7 +46,9 @@ const SurveyCard: React.FC<SurveyPageProps> = ({
   onPrev,
   onNext,
 }) => {
-  const [ageRange, setAgeRange] = useState(selectedAnswers?.ageRange || 0);
+  const [ageRange, setAgeRange] = useState<AgeCategory>(
+    selectedAnswers?.ageRange || "adult"
+  );
   const [genderPreference, setGenderPreference] = useState(
     selectedAnswers?.genderPreference || ""
   );
@@ -64,7 +66,7 @@ const SurveyCard: React.FC<SurveyPageProps> = ({
     if (selectedAnswers?.reason) setReason(selectedAnswers.reason);
   }, [selectedAnswers]);
 
-  function setSelectionData(field: string, data: string) {
+  function setSelectionData(field: string, data: string | AgeCategory) {
     if (setData) setData(field, data);
   }
 
@@ -114,7 +116,7 @@ const SurveyCard: React.FC<SurveyPageProps> = ({
             <AgeRangeSlider
               onChange={(value) => {
                 setAgeRange(value);
-                setSelectionData("ageRange", value.toString());
+                setSelectionData("ageRange", value);
               }}
               initialValue={ageRange}
             />
@@ -152,6 +154,7 @@ const SurveyCard: React.FC<SurveyPageProps> = ({
       </div>
     </div>
   );
+
   const renderTextQuestion = () => (
     <div className="survey-card__container">
       <div className="survey-card__navigation" onClick={onPrev}>
@@ -165,7 +168,10 @@ const SurveyCard: React.FC<SurveyPageProps> = ({
           <PInput
             label=""
             value={reason}
-            onChange={setReason}
+            onChange={(value) => {
+              setReason(value);
+              setSelectionData("reason", value);
+            }}
             placeholder="Type something here!"
             textarea
           />
