@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import type { AgeCategory } from "./components/range-slider";
+import type { ISurveyResult } from "src/api/interfaces/user";
+
+import { useApi } from "src/api/api-context";
+import { checkLoginStatus } from "src/helpers/auth";
 
 import { PAW_SEEKER_STEPS, PAW_GUARD_STEPS, OTHER_STEPS } from "./constants";
 
+import SurveyLoadingScreen from "./components/survey-loading";
 import PStepper from "src/components/p-stepper";
 import SurveyCard from "./components/survey-card";
-import { AgeCategory } from "./components/range-slider";
-import { useApi } from "src/api/api-context";
 
 import "./styles.scss";
-import SurveyLoadingScreen from "./components/survey-loading";
-import { ISurveyResult } from "src/api/interfaces/user";
 
 interface RegisterInfo {
   username: string;
@@ -35,6 +39,7 @@ const SurveyPage: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const registerInfo = JSON.parse(
@@ -149,7 +154,20 @@ const SurveyPage: React.FC = () => {
     }
 
     setIsSuccess(true);
+    await login(storedRegisterInfo.username, storedRegisterInfo.password);
   };
+  async function login(username: string, password: string) {
+    const { err, res } = await api.auth.login({ username, password });
+    if (err) return;
+
+    const { token } = res?.data as { token: string };
+
+    localStorage.setItem("token", token);
+
+    await checkLoginStatus(dispatch, api);
+    navigate("/");
+  }
+
   const handleNext = () => {
     if (
       steps[activeStep - 1].required &&
