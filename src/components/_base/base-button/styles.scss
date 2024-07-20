@@ -1,48 +1,47 @@
 .base-button {
-    --base-button-py: 10px;
-    --base-button-px: 28px;
+  --base-button-py: 10px;
+  --base-button-px: 28px;
 
-    --base-button-bg: var(--primary);
-    --base-button-text-color: var(--color-white);
+  --base-button-bg: var(--primary);
+  --base-button-text-color: var(--color-white);
 
-    padding: var(--base-button-py) var(--base-button-px);
-    
-    cursor: pointer;
+  padding: var(--base-button-py) var(--base-button-px);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  cursor: pointer;
 
-    font-weight: var( --font-medium);
-    font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--base-button-bg);
-    color: var(--base-button-text-color);
+  font-weight: var(--font-medium);
+  font-size: 16px;
 
-    border-radius: 8px;
-    border: none;
+  background-color: var(--base-button-bg);
+  color: var(--base-button-text-color);
 
-    transition: background-color 0.3s ease-in-out;
+  border-radius: 8px;
+  border: none;
 
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    --base-button-bg: var(--primary-light);
+  }
+  &:disabled {
+    --base-button-bg: var(--dark-20);
+    --base-button-text-color: var(--dark-40);
+    cursor: not-allowed;
+  }
+  &--outline {
+    --base-button-bg: var(--color-white);
+    --base-button-text-color: var(--primary);
+
+    border: 1.5px solid var(--primary);
     &:hover {
-        --base-button-bg: var(--primary-light);
+      --base-button-text-color: var(--color-white);
     }
-    &:disabled {
-        --base-button-bg: var(--dark-20);
-        --base-button-text-color: var(--dark-40);
-        cursor: not-allowed;
-    }
-    &--outline {
-        --base-button-bg: var(--color-white);
-        --base-button-text-color: var(--primary);
-
-        border: 1.5px solid var(--primary);
-        &:hover {
-            --base-button-text-color: var(--color-white);
-        }
-    }
-    &--rounded {
-        border-radius: 57px;
-    }
-
+  }
+  &--rounded {
+    border-radius: 57px;
+  }
 }

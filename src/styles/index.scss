@@ -6,13 +6,12 @@ body {
   font-weight: var(--font-regular);
 }
 .page {
-
   --page-px-lg: 28px;
   --page-py-lg: 200px;
 
   --page-px-md: 20px;
   --page-py-md: 80px;
-  
+
   padding: var(--page-py-md) var(--page-px-md);
   max-width: 1200px;
 
@@ -25,12 +24,11 @@ body {
 
     justify-items: center;
     grid-gap: 150px;
-  
+
     @media screen and (max-width: 768px) {
       grid-template-columns: 1fr;
       grid-gap: 0;
       padding: 16px;
-      
     }
   }
 }
@@ -38,7 +36,7 @@ body {
 .form {
   display: flex;
   flex-direction: column;
-  
+
   gap: 18px;
   width: 100%;
   &__forgot-password {
@@ -54,11 +52,11 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 13px;
-    @media screen and (max-width: 768px){
+    @media screen and (max-width: 768px) {
       grid-template-columns: 1fr;
     }
   }
-  &__location  {
+  &__location {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 13px;
@@ -67,19 +65,17 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-
   }
   &__login {
     &-title {
-        font-size: 32px;
-        font-weight: 600;
-        color: var(--primary)
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
     }
     &-subtitle {
       font-size: 15px;
       font-weight: 400;
-      color: #242B33;
+      color: #242b33;
     }
-
   }
 }
