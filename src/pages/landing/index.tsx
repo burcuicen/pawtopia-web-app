@@ -1,11 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import './styles.scss';
+import './styles.scss'
 const Landing: React.FC = () => {
-    return (
-        <div className="landing">
-        </div>
-    );
-};
+  return <div className="landing"></div>
+}
 
-export default Landing;
+export default Landing
