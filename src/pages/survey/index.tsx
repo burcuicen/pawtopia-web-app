@@ -31,6 +31,7 @@ type ProfileType = "looking-pet" | "looking-guardian" | "other";
 const SurveyPage: React.FC = () => {
   const navigate = useNavigate();
   const api = useApi();
+  const dispatch = useDispatch();
 
   const [steps, setSteps] = useState(PAW_SEEKER_STEPS);
   const totalSteps = steps.length;
@@ -39,7 +40,6 @@ const SurveyPage: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const registerInfo = JSON.parse(
@@ -101,59 +101,57 @@ const SurveyPage: React.FC = () => {
     }
   }, [surveyData.purpose]);
 
-  const getUserType = (
-    purpose: ProfileType
-  ): "paw-seeker" | "paw-guardian" | "other" => {
-    switch (purpose) {
-      case "looking-pet":
-        return "paw-seeker";
-      case "looking-guardian":
-        return "paw-guardian";
-      default:
-        return "other";
-    }
-  };
   const handleSurveySubmit = async () => {
     setIsLoading(true);
 
     const storedRegisterInfo = JSON.parse(
       localStorage.getItem("registerInfo") as string
     ) as RegisterInfo;
+    const { username, email, firstName, lastName, password, city, country } =
+      storedRegisterInfo;
+    const {
+      purpose,
+      ageRange,
+      animalPreference,
+      genderPreference,
+      healthStatus,
+      animalCareHistory,
+      reason,
+    } = surveyData;
 
     const preparedSurveyData: ISurveyResult = {
-      purpose: surveyData.purpose,
-      ageRange: surveyData.ageRange,
-      animalPreference: surveyData.animalPreference,
-      genderPreference: surveyData.genderPreference,
-      healthStatus: surveyData.healthStatus,
+      purpose,
+      ageRange,
+      animalPreference,
+      genderPreference,
+      healthStatus,
     };
 
-    if (surveyData.animalCareHistory) {
-      preparedSurveyData.animalCareHistory = surveyData.animalCareHistory;
-    }
+    if (surveyData.animalCareHistory)
+      preparedSurveyData.animalCareHistory = animalCareHistory;
 
-    if (surveyData.reason) {
-      preparedSurveyData.reason = surveyData.reason;
-    }
+    if (surveyData.reason) preparedSurveyData.reason = reason;
 
     const body = {
-      username: storedRegisterInfo.username,
-      email: storedRegisterInfo.email,
-      firstName: storedRegisterInfo.firstName,
-      lastName: storedRegisterInfo.lastName,
-      password: storedRegisterInfo.password,
-      city: storedRegisterInfo.city,
-      country: storedRegisterInfo.country,
+      username,
+      email,
+      firstName,
+      lastName,
+      password,
+      city,
+      country,
       surveyResults: preparedSurveyData,
     };
 
     const { err, res } = await api.auth.register(body);
+
     if (err) {
       console.error("Error submitting survey:", err);
       return;
     }
 
     setIsSuccess(true);
+
     await login(storedRegisterInfo.username, storedRegisterInfo.password);
   };
   async function login(username: string, password: string) {
