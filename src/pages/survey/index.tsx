@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import type { AgeCategory } from "./components/range-slider";
+import type { ISurveyResult } from "src/api/interfaces/user";
+
+import { useApi } from "src/api/api-context";
+import { checkLoginStatus } from "src/helpers/auth";
 
 import { PAW_SEEKER_STEPS, PAW_GUARD_STEPS, OTHER_STEPS } from "./constants";
 
+import SurveyLoadingScreen from "./components/survey-loading";
 import PStepper from "src/components/p-stepper";
 import SurveyCard from "./components/survey-card";
-import { AgeCategory } from "./components/range-slider";
-import { useApi } from "src/api/api-context";
 
 import "./styles.scss";
-import SurveyLoadingScreen from "./components/survey-loading";
-import { ISurveyResult } from "src/api/interfaces/user";
 
 interface RegisterInfo {
   username: string;
@@ -27,6 +31,7 @@ type ProfileType = "looking-pet" | "looking-guardian" | "other";
 const SurveyPage: React.FC = () => {
   const navigate = useNavigate();
   const api = useApi();
+  const dispatch = useDispatch();
 
   const [steps, setSteps] = useState(PAW_SEEKER_STEPS);
   const totalSteps = steps.length;
@@ -96,60 +101,71 @@ const SurveyPage: React.FC = () => {
     }
   }, [surveyData.purpose]);
 
-  const getUserType = (
-    purpose: ProfileType
-  ): "paw-seeker" | "paw-guardian" | "other" => {
-    switch (purpose) {
-      case "looking-pet":
-        return "paw-seeker";
-      case "looking-guardian":
-        return "paw-guardian";
-      default:
-        return "other";
-    }
-  };
   const handleSurveySubmit = async () => {
     setIsLoading(true);
 
     const storedRegisterInfo = JSON.parse(
       localStorage.getItem("registerInfo") as string
     ) as RegisterInfo;
+    const { username, email, firstName, lastName, password, city, country } =
+      storedRegisterInfo;
+    const {
+      purpose,
+      ageRange,
+      animalPreference,
+      genderPreference,
+      healthStatus,
+      animalCareHistory,
+      reason,
+    } = surveyData;
 
     const preparedSurveyData: ISurveyResult = {
-      purpose: surveyData.purpose,
-      ageRange: surveyData.ageRange,
-      animalPreference: surveyData.animalPreference,
-      genderPreference: surveyData.genderPreference,
-      healthStatus: surveyData.healthStatus,
+      purpose,
+      ageRange,
+      animalPreference,
+      genderPreference,
+      healthStatus,
     };
 
-    if (surveyData.animalCareHistory) {
-      preparedSurveyData.animalCareHistory = surveyData.animalCareHistory;
-    }
+    if (surveyData.animalCareHistory)
+      preparedSurveyData.animalCareHistory = animalCareHistory;
 
-    if (surveyData.reason) {
-      preparedSurveyData.reason = surveyData.reason;
-    }
+    if (surveyData.reason) preparedSurveyData.reason = reason;
 
     const body = {
-      username: storedRegisterInfo.username,
-      email: storedRegisterInfo.email,
-      firstName: storedRegisterInfo.firstName,
-      lastName: storedRegisterInfo.lastName,
-      password: storedRegisterInfo.password,
-      city: storedRegisterInfo.city,
-      country: storedRegisterInfo.country,
+      username,
+      email,
+      firstName,
+      lastName,
+      password,
+      city,
+      country,
       surveyResults: preparedSurveyData,
     };
 
     const { err, res } = await api.auth.register(body);
+
     if (err) {
       console.error("Error submitting survey:", err);
       return;
     }
 
     setIsSuccess(true);
+
+    await login(storedRegisterInfo.username, storedRegisterInfo.password);
   };
+  async function login(username: string, password: string) {
+    const { err, res } = await api.auth.login({ username, password });
+    if (err) return;
+
+    const { token } = res?.data as { token: string };
+
+    localStorage.setItem("token", token);
+
+    await checkLoginStatus(dispatch, api);
+    navigate("/");
+  }
+
   const handleNext = () => {
     if (
       steps[activeStep - 1].required &&
