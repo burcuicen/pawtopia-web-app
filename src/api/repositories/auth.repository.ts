@@ -40,5 +40,4 @@ export class AuthRepository {
 
     return await this.httpClient.request<T, E>(config)
   }
-
 }
