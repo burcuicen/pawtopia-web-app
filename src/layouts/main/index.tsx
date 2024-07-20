@@ -1,22 +1,22 @@
-import React from 'react';
+import React from 'react'
 
-import PHeader from 'src/components/p-header';
-import PFooter from 'src/components/p-footer';
+import PHeader from 'src/components/p-header'
+import PFooter from 'src/components/p-footer'
 
-import './styles.scss';
+import './styles.scss'
 
 type MainLayoutProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className='main-layout'>
+    <div className="main-layout">
       <PHeader />
       <main>{children}</main>
       <PFooter />
     </div>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout
