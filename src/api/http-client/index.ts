@@ -3,7 +3,7 @@ import { RequestWrapper } from '../interfaces'
 import { to } from '../utils'
 
 export class HttpClient {
-  private API_BASE_URL = 'https://pawtopia-gkii.onrender.com'
+  private API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080'
   private axios: AxiosInstance
 
   constructor() {
