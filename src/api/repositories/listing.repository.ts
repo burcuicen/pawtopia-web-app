@@ -55,7 +55,7 @@ export class ListingRepository {
 
   async approve<T = any, E = unknown>(id: string): Promise<RequestWrapper<T, E>> {
     const config: AxiosRequestConfig = {
-      method: 'PATCH',
+      method: 'PUT',
       url: `${this.URL}/${id}/approve`
     }
     return await this.httpClient.request<T, E>(config)
@@ -64,7 +64,7 @@ export class ListingRepository {
   async getUsersListings<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
     const config: AxiosRequestConfig = {
       method: 'GET',
-      url: `${this.URL}/my-listings`
+      url: `${this.URL}/user`
     }
     return await this.httpClient.request<T, E>(config)
   }
