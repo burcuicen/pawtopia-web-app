@@ -7,6 +7,8 @@ export class HttpClient {
   private axios: AxiosInstance
 
   constructor() {
+    console.log('🚀 API Base URL:', this.API_BASE_URL)
+    console.log('🔧 ENV Variable:', process.env.REACT_APP_API_BASE_URL)
     this.axios = this.createAxiosInstance()
   }
 
