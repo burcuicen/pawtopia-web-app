@@ -13,6 +13,8 @@ import Login from 'src/pages/login'
 import Logout from './pages/logout'
 import Signup from 'src/pages/signup'
 import Survey from 'src/pages/survey'
+import PetsBrowse from 'src/pages/pets'
+import PetDetail from 'src/pages/pet-detail'
 
 const App: React.FC = () => {
   useCheckLoginStatus()
@@ -50,6 +52,8 @@ const App: React.FC = () => {
         <MainLayout>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/pets" element={<PetsBrowse />} />
+            <Route path="/pets/:id" element={<PetDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<Signup />} />

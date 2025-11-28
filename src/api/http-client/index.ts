@@ -3,7 +3,7 @@ import { RequestWrapper } from '../interfaces'
 import { to } from '../utils'
 
 export class HttpClient {
-  private API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080'
+  private API_BASE_URL = process.env.REACT_APP_API_BASE_URL
   private axios: AxiosInstance
 
   constructor() {
@@ -33,6 +33,16 @@ export class HttpClient {
 
   async request<T, E>(config: AxiosRequestConfig): Promise<RequestWrapper<T, E>> {
     const req = this.axios.request(config)
+
+    const [err, res] = await to<AxiosResponse<T>, AxiosError<E>>(req)
+
+    return { err, res }
+  }
+
+  // Public request without auth header (for public endpoints like /listing)
+  async publicRequest<T, E>(config: AxiosRequestConfig): Promise<RequestWrapper<T, E>> {
+    const publicAxios = axios.create({ baseURL: this.API_BASE_URL })
+    const req = publicAxios.request(config)
 
     const [err, res] = await to<AxiosResponse<T>, AxiosError<E>>(req)
 
