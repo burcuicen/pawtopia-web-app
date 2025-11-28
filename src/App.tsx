@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { setIsMobile } from 'src/store/reducers/isMobileSlice'
 import { useCheckLoginStatus } from 'src/helpers/auth'
@@ -31,17 +33,31 @@ const App: React.FC = () => {
     }
   }, [dispatch])
   return (
-    <Router>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/onboarding" element={<Survey />} />
-        </Routes>
-      </MainLayout>
-    </Router>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Router>
+        <MainLayout>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/onboarding" element={<Survey />} />
+          </Routes>
+        </MainLayout>
+      </Router>
+    </>
   )
 }
 

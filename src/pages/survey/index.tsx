@@ -7,6 +7,7 @@ import type { ISurveyResult } from 'src/api/interfaces/user'
 
 import { useApi } from 'src/api/api-context'
 import { checkLoginStatus } from 'src/helpers/auth'
+import { showToast } from 'src/utils/toast'
 
 import { PAW_SEEKER_STEPS, PAW_GUARD_STEPS, OTHER_STEPS } from './constants'
 
@@ -39,13 +40,12 @@ const SurveyPage: React.FC = () => {
 
   const [firstName, setFirstName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
     const registerInfo = JSON.parse(localStorage.getItem('registerInfo') as string) as RegisterInfo
     if (registerInfo?.firstName) setFirstName(registerInfo.firstName)
     else navigate('/signup')
-  }, [])
+  }, [navigate])
 
   const handleStepChange = (step: number) => {
     if (steps[activeStep - 1].required && !surveyData[steps[activeStep - 1].questionField]) {
@@ -99,54 +99,87 @@ const SurveyPage: React.FC = () => {
   const handleSurveySubmit = async () => {
     setIsLoading(true)
 
-    const storedRegisterInfo = JSON.parse(localStorage.getItem('registerInfo') as string) as RegisterInfo
-    const { username, email, firstName, lastName, password, city, country } = storedRegisterInfo
-    const { purpose, ageRange, animalPreference, genderPreference, healthStatus, animalCareHistory, reason } = surveyData
+    try {
+      const storedRegisterInfo = JSON.parse(localStorage.getItem('registerInfo') as string) as RegisterInfo
+      
+      if (!storedRegisterInfo) {
+        showToast.error('Registration information not found. Please sign up again.')
+        navigate('/signup')
+        return
+      }
 
-    const preparedSurveyData: ISurveyResult = {
-      purpose,
-      ageRange,
-      animalPreference,
-      genderPreference,
-      healthStatus
+      const { username, email, firstName, lastName, password, city, country } = storedRegisterInfo
+      const { purpose, ageRange, animalPreference, genderPreference, healthStatus, animalCareHistory, reason } = surveyData
+
+      const preparedSurveyData: ISurveyResult = {
+        purpose,
+        ageRange,
+        animalPreference,
+        genderPreference,
+        healthStatus
+      }
+
+      if (surveyData.animalCareHistory) preparedSurveyData.animalCareHistory = animalCareHistory
+      if (surveyData.reason) preparedSurveyData.reason = reason
+
+      const body = {
+        username,
+        email,
+        firstName,
+        lastName,
+        password,
+        city,
+        country,
+        surveyResults: preparedSurveyData
+      }
+
+      const { err } = await api.auth.register(body)
+
+      if (err) {
+        const errorMessage = (err as any).response?.data?.message || 'Registration failed. Please try again.'
+        showToast.error(errorMessage)
+        setIsLoading(false)
+        return
+      }
+
+      showToast.success('Registration successful! Logging you in...')
+
+      // Auto-login after successful registration
+      await login(storedRegisterInfo.username, storedRegisterInfo.password)
+      
+      // Clear registration info from localStorage
+      localStorage.removeItem('registerInfo')
+    } catch (error: any) {
+      showToast.error(error.message || 'An unexpected error occurred')
+      setIsLoading(false)
     }
-
-    if (surveyData.animalCareHistory) preparedSurveyData.animalCareHistory = animalCareHistory
-
-    if (surveyData.reason) preparedSurveyData.reason = reason
-
-    const body = {
-      username,
-      email,
-      firstName,
-      lastName,
-      password,
-      city,
-      country,
-      surveyResults: preparedSurveyData
-    }
-
-    const { err, res } = await api.auth.register(body)
-
-    if (err) {
-      console.error('Error submitting survey:', err)
-      return
-    }
-
-    setIsSuccess(true)
-
-    await login(storedRegisterInfo.username, storedRegisterInfo.password)
   }
+  
   async function login(username: string, password: string) {
-    const { err, res } = await api.auth.login({ username, password })
-    if (err) return
+    try {
+      const { err, res } = await api.auth.login({ username, password })
+      
+      if (err) {
+        showToast.error('Login failed. Please try logging in manually.')
+        navigate('/login')
+        return
+      }
 
-    const { token } = res?.data as { token: string }
+      const { token } = res?.data as { token: string }
 
-    localStorage.setItem('token', token)
+      localStorage.setItem('token', token)
 
-    await checkLoginStatus(dispatch, api)
-    navigate('/')
+      await checkLoginStatus(dispatch, api)
+      
+      showToast.success('Welcome to Pawtopia!')
+      
+      setTimeout(() => {
+        navigate('/')
+      }, 1500)
+    } catch (error: any) {
+      showToast.error('Login failed. Please try logging in manually.')
+      navigate('/login')
+    }
   }
 
   const handleNext = () => {

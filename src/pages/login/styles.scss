@@ -1,0 +1,90 @@
+.page__login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  gap: 4rem;
+  padding: 2rem;
+
+  .page__login-asset {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .form__login {
+    flex: 1;
+    max-width: 450px;
+    width: 100%;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: white;
+
+    .form__login-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .form__login-subtitle {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .form__forgot-password {
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+
+      a {
+        color: var(--primary-color, #FF6B6B);
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .form__actions {
+      margin-top: 1.5rem;
+    }
+
+    .form__signup-link {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #666;
+
+      a {
+        color: var(--primary-color, #FF6B6B);
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 2rem;
+
+    .form__login {
+      max-width: 100%;
+    }
+  }
+}

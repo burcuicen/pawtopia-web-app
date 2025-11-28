@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import { Country, State } from 'country-state-city'
 
 import { RootState } from 'src/store'
+import { showToast } from 'src/utils/toast'
 
 import BaseButton from 'src/components/_base/base-button'
 import PInput from 'src/components/p-input'
@@ -41,6 +42,7 @@ const Signup: React.FC = () => {
   const [cities, setCities] = useState<DropdownItem[]>([])
 
   const [validateForm, setValidateForm] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const countryItems = Country.getAllCountries().map(
@@ -77,20 +79,54 @@ const Signup: React.FC = () => {
     setPasswordError('')
     setConfirmPasswordError('')
 
-    let isValid = true
+    // Validation
+    if (!username.trim()) {
+      showToast.error('Username is required')
+      return
+    }
+
+    if (!email.trim()) {
+      showToast.error('Email is required')
+      return
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      showToast.error('Please enter a valid email address')
+      return
+    }
+
+    if (!firstName.trim() || !lastName.trim()) {
+      showToast.error('First name and last name are required')
+      return
+    }
 
     if (!password) {
       setPasswordError('Password is required')
-      isValid = false
-    } else if (password !== confirmPassword) {
+      showToast.error('Password is required')
+      return
+    }
+
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters')
+      showToast.error('Password must be at least 6 characters')
+      return
+    }
+
+    if (password !== confirmPassword) {
       setPasswordError('Passwords do not match')
       setConfirmPasswordError('Passwords do not match')
-      isValid = false
+      showToast.error('Passwords do not match')
+      return
+    }
+
+    if (!selectedCountry || !selectedCity) {
+      showToast.error('Please select country and city')
+      return
     }
 
     setValidateForm(true)
-
-    if (!isValid) return
 
     const body = {
       username,
@@ -99,10 +135,12 @@ const Signup: React.FC = () => {
       lastName,
       password,
       userType: 'other',
-      country: selectedCountry?.id as string,
-      city: selectedCity?.id as string
+      country: selectedCountry.id,
+      city: selectedCity.id
     }
+    
     localStorage.setItem('registerInfo', JSON.stringify(body))
+    showToast.success('Registration info saved! Please complete the survey.')
     navigate('/onboarding')
   }
 
@@ -163,7 +201,17 @@ const Signup: React.FC = () => {
           />
         </div>
         <div className="form__actions">
-          <BaseButton title="Register" type="default" onClick={setRegisterInfo} />
+          <BaseButton 
+            title={isLoading ? 'Creating Account...' : 'Register'} 
+            type="default" 
+            onClick={setRegisterInfo}
+            disabled={isLoading}
+          />
+        </div>
+
+        <div className="form__login-link">
+          Already have an account?&nbsp;
+          <Link to="/login">Login here</Link>
         </div>
       </div>
     </div>
