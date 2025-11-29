@@ -20,8 +20,8 @@ const DashboardListings: React.FC = () => {
       if (!err && res?.data) {
         // The API returns { items: [], metaData: {} }, so we need to access .items
         const items = res.data.items || []
-        const pending = items.filter((l: any) => !l.isApproved)
-        setPendingListings(pending)
+        // User wants to see all listings in admin dashboard
+        setPendingListings(items)
       }
     } catch (error) {
       console.error('Failed to load pending listings:', error)
@@ -98,7 +98,7 @@ const DashboardListings: React.FC = () => {
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h2 className="text-xl font-bold text-dark-80 mb-6">
-          Pending Approvals ({pendingListings.length})
+          All Listings ({pendingListings.length})
         </h2>
 
         {loading ? (
