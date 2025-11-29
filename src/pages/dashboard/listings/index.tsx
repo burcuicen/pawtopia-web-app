@@ -22,7 +22,7 @@ const DashboardListings: React.FC = () => {
     try {
       setLoading(true)
       const skip = (page - 1) * limit
-      const { err, res } = await api.listing.getAll({ skip, limit, filter: { isApproved: false } })
+      const { err, res } = await api.listing.getAll({ skip, limit, filter: JSON.stringify({ isApproved: false }) })
       if (!err && res?.data) {
         const items = res.data.items || []
         setPendingListings(items)
