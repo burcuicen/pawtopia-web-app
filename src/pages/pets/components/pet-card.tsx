@@ -25,24 +25,6 @@ interface PetCardProps {
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const navigate = useNavigate()
 
-  const getPlaceholderImage = () => {
-    const images = {
-      cat: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400',
-      dog: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400',
-      other: 'https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400',
-    }
-    return images[pet.details.animalType as keyof typeof images] || images.other
-  }
-
-  const getAgeLabel = (age: string) => {
-    const labels: Record<string, string> = {
-      baby: 'Puppy/Kitten',
-      adult: 'Adult',
-      senior: 'Senior',
-    }
-    return labels[age] || age
-  }
-
   return (
     <div
       onClick={() => navigate(`/pets/${pet._id}`)}
@@ -51,7 +33,7 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
       {/* Image */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={pet.details.photos?.[0] || getPlaceholderImage()}
+          src={pet.details.photos[0]}
           alt={pet.details.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -76,11 +58,11 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
         <div className="flex justify-between items-center pt-4 border-t border-dark-10 text-sm text-dark-60">
           <div className="flex items-center gap-1">
             <span>🎂</span>
-            <span>{getAgeLabel(pet.details.age)}</span>
+            <span className="capitalize">{pet.details.age}</span>
           </div>
           <div className="flex items-center gap-1">
             <span>📍</span>
-            <span>{pet.details.location.city}</span>
+            <span>{pet.details.location.city}, {pet.details.location.country}</span>
           </div>
         </div>
       </div>
