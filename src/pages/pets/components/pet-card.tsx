@@ -32,8 +32,13 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const api = useApi()
   const dispatch = useDispatch()
   const { userInfo, isLoggedIn } = useSelector((state: any) => state.auth)
+  const [isFavorite, setIsFavorite] = React.useState(false)
 
-  const isFavorite = userInfo?.favorites?.includes(pet._id)
+  React.useEffect(() => {
+    if (userInfo?.favorites) {
+      setIsFavorite(userInfo.favorites.includes(pet._id))
+    }
+  }, [userInfo, pet._id])
 
   const handleToggleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -42,14 +47,22 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
       return
     }
 
+    // Optimistic update
+    const previousState = isFavorite
+    setIsFavorite(!previousState)
+
     try {
       const { err, res } = await api.auth.toggleFavorite(pet._id)
       if (!err && res?.data) {
         dispatch(setAuthState({ isLoggedIn: true, userInfo: res.data }))
-        showToast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites')
+        // Toast removed as requested
+      } else {
+        // Revert on error
+        setIsFavorite(previousState)
       }
     } catch (error) {
       console.error('Failed to toggle favorite:', error)
+      setIsFavorite(previousState)
     }
   }
 
