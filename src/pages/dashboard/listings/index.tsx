@@ -18,7 +18,9 @@ const DashboardListings: React.FC = () => {
     try {
       const { err, res } = await api.listing.getAll()
       if (!err && res?.data) {
-        const pending = res.data.filter((l: any) => !l.isApproved)
+        // The API returns { items: [], metaData: {} }, so we need to access .items
+        const items = res.data.items || []
+        const pending = items.filter((l: any) => !l.isApproved)
         setPendingListings(pending)
       }
     } catch (error) {
