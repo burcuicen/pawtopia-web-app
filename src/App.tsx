@@ -21,6 +21,11 @@ import EditListing from 'src/pages/edit-listing'
 import MyListings from 'src/pages/my-listings'
 import AdminDashboard from 'src/pages/admin'
 import About from 'src/pages/about'
+import DashboardLayout from 'src/layouts/dashboard'
+import Dashboard from 'src/pages/dashboard'
+import DashboardListings from 'src/pages/dashboard/listings'
+import DashboardUsers from 'src/pages/dashboard/users'
+import DashboardSettings from 'src/pages/dashboard/settings'
 
 const App: React.FC = () => {
   useCheckLoginStatus()
@@ -55,23 +60,45 @@ const App: React.FC = () => {
         theme="light"
       />
       <Router>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/pets" element={<PetsBrowse />} />
-            <Route path="/pets/:id" element={<PetDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/onboarding" element={<Survey />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/create-listing" element={<ListingForm />} />
-            <Route path="/edit-listing/:id" element={<EditListing />} />
-            <Route path="/my-listings" element={<MyListings />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-          </Routes>
-        </MainLayout>
+        <Routes>
+          {/* Dashboard Routes */}
+          <Route
+            path="/dashboard/*"
+            element={
+              <DashboardLayout>
+                <Routes>
+                  <Route index element={<Dashboard />} />
+                  <Route path="listings" element={<DashboardListings />} />
+                  <Route path="users" element={<DashboardUsers />} />
+                  <Route path="settings" element={<DashboardSettings />} />
+                </Routes>
+              </DashboardLayout>
+            }
+          />
+
+          {/* Public Routes */}
+          <Route
+            path="*"
+            element={
+              <MainLayout>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/pets" element={<PetsBrowse />} />
+                  <Route path="/pets/:id" element={<PetDetail />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/logout" element={<Logout />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/onboarding" element={<Survey />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/create-listing" element={<ListingForm />} />
+                  <Route path="/edit-listing/:id" element={<EditListing />} />
+                  <Route path="/my-listings" element={<MyListings />} />
+                </Routes>
+              </MainLayout>
+            }
+          />
+        </Routes>
       </Router>
     </>
   )

@@ -76,4 +76,12 @@ export class ListingRepository {
     }
     return await this.httpClient.request<T, E>(config)
   }
+
+  async seed<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: `${this.URL}/seed`
+    }
+    return await this.httpClient.request<T, E>(config)
+  }
 }

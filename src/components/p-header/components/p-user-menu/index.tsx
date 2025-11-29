@@ -43,7 +43,7 @@ const PUserMenu: React.FC = () => {
         <span>Listings</span>
       </div>
       {userInfo?.userType === 'paw-admin' && (
-        <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/admin')}>
+        <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/dashboard')}>
           <BaseIcon icon="material-symbols:admin-panel-settings-outline" width={24} />
           <span>Admin Dashboard</span>
         </div>
