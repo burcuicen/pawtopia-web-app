@@ -24,7 +24,6 @@ interface Pet {
 
 const PetsBrowse: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([])
-  const [filteredPets, setFilteredPets] = useState<Pet[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [filters, setFilters] = useState({
@@ -32,68 +31,56 @@ const PetsBrowse: React.FC = () => {
     age: 'all',
     gender: 'all',
   })
+  
+  // Pagination state
+  const [page, setPage] = useState(1)
+  const [limit] = useState(9)
+  const [totalCount, setTotalCount] = useState(0)
+
   const api = useApi()
 
   const loadPets = React.useCallback(async () => {
     try {
       setLoading(true)
-      const { err, res } = await api.listing.getAll()
+      
+      // Construct filter object
+      const filter: any = {
+        isApproved: true,
+        'details.photos.0': { $exists: true, $ne: '' } // Ensure photos exist
+      }
+
+      if (filters.animalType !== 'all') filter['details.animalType'] = filters.animalType
+      if (filters.age !== 'all') filter['details.age'] = filters.age
+      if (filters.gender !== 'all') filter['details.gender'] = filters.gender
+
+      const skip = (page - 1) * limit
+
+      const { err, res } = await api.listing.getAll({
+        skip,
+        limit,
+        filter: JSON.stringify(filter),
+        text: searchQuery
+      })
+
       if (!err && res?.data) {
-        // The API returns { items: [], metaData: {} }, so we need to access .items
-        const items = res.data.items || []
-        // Filter only approved listings AND listings with photos
-        const approvedPets = items.filter((pet: Pet) => 
-          pet.isApproved && 
-          pet.details?.photos && 
-          pet.details.photos.length > 0 &&
-          pet.details.photos[0] !== ''
-        )
-        setPets(approvedPets)
+        setPets(res.data.items || [])
+        setTotalCount(res.data.metaData?.totalCount || 0)
       }
     } catch (error) {
       console.error('Failed to load pets:', error)
     } finally {
       setLoading(false)
     }
-  }, [api.listing])
+  }, [api.listing, page, limit, filters, searchQuery])
 
   useEffect(() => {
     loadPets()
   }, [loadPets])
 
+  // Reset page when filters change
   useEffect(() => {
-    const applyFilters = () => {
-      let filtered = [...pets]
-
-      // Search filter
-      if (searchQuery) {
-        filtered = filtered.filter(
-          (pet) =>
-            pet.details.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            pet.details.breed.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      }
-
-      // Animal type filter
-      if (filters.animalType !== 'all') {
-        filtered = filtered.filter((pet) => pet.details.animalType === filters.animalType)
-      }
-
-      // Age filter
-      if (filters.age !== 'all') {
-        filtered = filtered.filter((pet) => pet.details.age === filters.age)
-      }
-
-      // Gender filter
-      if (filters.gender !== 'all') {
-        filtered = filtered.filter((pet) => pet.details.gender === filters.gender)
-      }
-
-      setFilteredPets(filtered)
-    }
-
-    applyFilters()
-  }, [pets, searchQuery, filters])
+    setPage(1)
+  }, [filters, searchQuery])
 
   const handleFilterChange = (filterType: string, value: string) => {
     setFilters((prev) => ({ ...prev, [filterType]: value }))
@@ -122,11 +109,11 @@ const PetsBrowse: React.FC = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1"  style={{flexDirection: 'column' }}>
+          <main className="flex-1" style={{ flexDirection: 'column' }}>
             {/* Results Count */}
             <div className="mb-6 flex justify-between items-center">
               <p className="text-dark-60">
-                <span className="font-bold text-dark-80">{filteredPets.length}</span> pets found
+                <span className="font-bold text-dark-80">{totalCount}</span> pets found
               </p>
             </div>
 
@@ -135,13 +122,48 @@ const PetsBrowse: React.FC = () => {
               <div className="flex justify-center items-center min-h-[400px]">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
               </div>
-            ) : filteredPets.length > 0 ? (
-              /* Pet Grid */
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredPets.map((pet) => (
-                  <PetCard key={pet._id} pet={pet} />
-                ))}
-              </div>
+            ) : pets.length > 0 ? (
+              <>
+                {/* Pet Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {pets.map((pet) => (
+                    <PetCard key={pet._id} pet={pet} />
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {totalCount > 0 && (
+                  <div className="flex justify-center items-center mt-12 gap-4">
+                    <button
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                      className={`px-6 py-2 rounded-full font-medium transition-colors ${
+                        page === 1 
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border border-gray-200 text-dark-80 hover:bg-gray-50 hover:border-primary hover:text-primary'
+                      }`}
+                    >
+                      Previous
+                    </button>
+                    
+                    <span className="text-dark-60 font-medium">
+                      Page {page} of {Math.ceil(totalCount / limit)}
+                    </span>
+
+                    <button
+                      onClick={() => setPage(p => p + 1)}
+                      disabled={page * limit >= totalCount}
+                      className={`px-6 py-2 rounded-full font-medium transition-colors ${
+                        page * limit >= totalCount
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                          : 'bg-white border border-gray-200 text-dark-80 hover:bg-gray-50 hover:border-primary hover:text-primary'
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
               /* Empty State */
               <div className="bg-white rounded-3xl p-16 text-center shadow-sm">
