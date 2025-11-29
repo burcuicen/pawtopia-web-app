@@ -15,8 +15,8 @@ export class ListingRepository {
       method: 'GET',
       url: this.URL
     }
-    // Use publicRequest for public endpoint (no auth required)
-    return await this.httpClient.publicRequest<T, E>(config)
+    // Use request to include token if available (for optional auth on backend)
+    return await this.httpClient.request<T, E>(config)
   }
 
   async getById<T = any, E = unknown>(id: string): Promise<RequestWrapper<T, E>> {
