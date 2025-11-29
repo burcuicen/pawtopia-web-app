@@ -23,7 +23,10 @@ const FeaturedPets: React.FC = () => {
     try {
       const { err, res } = await api.listing.getAll()
       if (!err && res?.data) {
-        setPets(res.data.slice(0, 6))
+        // The API returns { items: [], metaData: {} }, so we need to access .items
+        const items = res.data.items || []
+        const approvedPets = items.filter((pet: any) => pet.isApproved)
+        setPets(approvedPets.slice(0, 6))
       }
     } catch (error) {
       console.error('Failed to load pets:', error)

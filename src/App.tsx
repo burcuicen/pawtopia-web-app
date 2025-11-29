@@ -26,6 +26,7 @@ import Dashboard from 'src/pages/dashboard'
 import DashboardListings from 'src/pages/dashboard/listings'
 import DashboardUsers from 'src/pages/dashboard/users'
 import DashboardSettings from 'src/pages/dashboard/settings'
+import AdminRoute from 'src/components/auth/admin-route'
 
 const App: React.FC = () => {
   useCheckLoginStatus()
@@ -61,20 +62,22 @@ const App: React.FC = () => {
       />
       <Router>
         <Routes>
-          {/* Dashboard Routes */}
-          <Route
-            path="/dashboard/*"
-            element={
-              <DashboardLayout>
-                <Routes>
-                  <Route index element={<Dashboard />} />
-                  <Route path="listings" element={<DashboardListings />} />
-                  <Route path="users" element={<DashboardUsers />} />
-                  <Route path="settings" element={<DashboardSettings />} />
-                </Routes>
-              </DashboardLayout>
-            }
-          />
+          {/* Dashboard Routes - Protected */}
+          <Route element={<AdminRoute />}>
+            <Route
+              path="/dashboard/*"
+              element={
+                <DashboardLayout>
+                  <Routes>
+                    <Route index element={<Dashboard />} />
+                    <Route path="listings" element={<DashboardListings />} />
+                    <Route path="users" element={<DashboardUsers />} />
+                    <Route path="settings" element={<DashboardSettings />} />
+                  </Routes>
+                </DashboardLayout>
+              }
+            />
+          </Route>
 
           {/* Public Routes */}
           <Route

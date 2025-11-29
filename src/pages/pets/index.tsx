@@ -39,8 +39,10 @@ const PetsBrowse: React.FC = () => {
       setLoading(true)
       const { err, res } = await api.listing.getAll()
       if (!err && res?.data) {
+        // The API returns { items: [], metaData: {} }, so we need to access .items
+        const items = res.data.items || []
         // Filter only approved listings
-        const approvedPets = res.data.filter((pet: Pet) => pet.isApproved)
+        const approvedPets = items.filter((pet: Pet) => pet.isApproved)
         setPets(approvedPets)
       }
     } catch (error) {
