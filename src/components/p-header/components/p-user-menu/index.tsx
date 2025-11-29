@@ -34,20 +34,16 @@ const PUserMenu: React.FC = () => {
         <BaseIcon icon="solar:user-outline" width={24} />
         <span>Profile</span>
       </div>
-      <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/dashboard')}>
-        <BaseIcon icon="material-symbols-light:dashboard-outline-rounded" width={24} />
-        <span>Dashboard</span>
-      </div>
+      {userInfo?.userType === 'paw-admin' && (
+        <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/dashboard')}>
+          <BaseIcon icon="material-symbols-light:dashboard-outline-rounded" width={24} />
+          <span>Dashboard</span>
+        </div>
+      )}
       <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/my-listings')}>
         <BaseIcon icon="mdi-light:format-list-checks" width={24} />
         <span>Listings</span>
       </div>
-      {userInfo?.userType === 'paw-admin' && (
-        <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/dashboard')}>
-          <BaseIcon icon="material-symbols:admin-panel-settings-outline" width={24} />
-          <span>Admin Dashboard</span>
-        </div>
-      )}
       <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/logout')}>
         <BaseIcon icon="material-symbols-light:logout" width={24} />
         <span>Logout</span>
