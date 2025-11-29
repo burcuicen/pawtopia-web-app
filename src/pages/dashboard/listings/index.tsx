@@ -10,21 +10,26 @@ const DashboardListings: React.FC = () => {
   const [selectedListing, setSelectedListing] = useState<any | null>(null)
   const [showModal, setShowModal] = useState(false)
 
+  const [page, setPage] = useState(1)
+  const [limit] = useState(9)
+  const [totalCount, setTotalCount] = useState(0)
+
   useEffect(() => {
     loadPendingListings()
-  }, [])
+  }, [page])
 
   const loadPendingListings = async () => {
     try {
-      const { err, res } = await api.listing.getAll()
+      setLoading(true)
+      const skip = (page - 1) * limit
+      const { err, res } = await api.listing.getAll({ skip, limit })
       if (!err && res?.data) {
-        // The API returns { items: [], metaData: {} }, so we need to access .items
         const items = res.data.items || []
-        // User wants to see all listings in admin dashboard
         setPendingListings(items)
+        setTotalCount(res.data.metaData?.totalCount || 0)
       }
     } catch (error) {
-      console.error('Failed to load pending listings:', error)
+      console.error('Failed to load listings:', error)
     } finally {
       setLoading(false)
     }
@@ -103,7 +108,7 @@ const DashboardListings: React.FC = () => {
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h2 className="text-xl font-bold text-dark-80 mb-6">
-          All Listings ({pendingListings.length})
+          All Listings ({totalCount})
         </h2>
 
         {loading ? (
@@ -154,6 +159,39 @@ const DashboardListings: React.FC = () => {
           <div className="text-center py-12 text-dark-60 bg-gray-50 rounded-xl">
             <div className="text-4xl mb-4">✅</div>
             <p>No pending listings to review</p>
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalCount > 0 && (
+          <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100">
+            <div className="text-sm text-dark-60">
+              Showing {((page - 1) * limit) + 1} to {Math.min(page * limit, totalCount)} of {totalCount} listings
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  page === 1 
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                    : 'bg-white border border-gray-200 text-dark-80 hover:bg-gray-50'
+                }`}
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setPage(p => p + 1)}
+                disabled={page * limit >= totalCount}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  page * limit >= totalCount
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                    : 'bg-white border border-gray-200 text-dark-80 hover:bg-gray-50'
+                }`}
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
       </div>

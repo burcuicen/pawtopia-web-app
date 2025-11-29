@@ -10,10 +10,11 @@ export class ListingRepository {
     this.httpClient = httpClient
   }
 
-  async getAll<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
+  async getAll<T = any, E = unknown>(params?: any): Promise<RequestWrapper<T, E>> {
     const config: AxiosRequestConfig = {
       method: 'GET',
-      url: this.URL
+      url: this.URL,
+      params
     }
     // Use request to include token if available (for optional auth on backend)
     return await this.httpClient.request<T, E>(config)
