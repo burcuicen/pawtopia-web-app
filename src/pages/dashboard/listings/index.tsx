@@ -62,15 +62,19 @@ const DashboardListings: React.FC = () => {
 
   const handleSeed = async () => {
     try {
+      console.log('Seed button clicked, starting seed process...')
       setLoading(true)
       const { err } = await api.listing.seed()
       if (!err) {
+        console.log('Seed successful')
         showToast.success('Database seeded successfully')
         loadPendingListings()
       } else {
+        console.error('Seed failed', err)
         showToast.error('Failed to seed database')
       }
     } catch (error) {
+      console.error('Seed error:', error)
       showToast.error('An error occurred')
     } finally {
       setLoading(false)
