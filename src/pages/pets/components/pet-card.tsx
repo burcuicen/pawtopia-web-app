@@ -1,5 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useApi } from 'src/api/api-context'
+import { setAuthState } from 'src/store/reducers/authSlice'
+import { showToast } from 'src/utils/toast'
 
 interface Pet {
   _id: string
@@ -22,10 +26,6 @@ interface PetCardProps {
   pet: Pet
 }
 
-import { useSelector, useDispatch } from 'react-redux'
-import { useApi } from 'src/api/api-context'
-import { setAuthState } from 'src/store/reducers/authSlice'
-import { showToast } from 'src/utils/toast'
 
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const navigate = useNavigate()
