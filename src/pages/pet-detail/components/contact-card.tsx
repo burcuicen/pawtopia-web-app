@@ -7,7 +7,8 @@ interface ContactCardProps {
     phone: string
   }
   createdBy: {
-    name: string
+    firstName: string
+    lastName: string
   }
   location: {
     city: string
@@ -32,10 +33,12 @@ const ContactCard: React.FC<ContactCardProps> = ({ contactDetails, createdBy, lo
       <div className="mb-6 pb-6 border-b border-dark-10">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center text-white text-2xl font-bold">
-            {createdBy.name.charAt(0).toUpperCase()}
+            {createdBy?.firstName?.charAt(0)?.toUpperCase() || '?'}
           </div>
           <div>
-            <div className="font-bold text-dark-80">{createdBy.name}</div>
+            <div className="font-bold text-dark-80">
+              {createdBy?.firstName} {createdBy?.lastName}
+            </div>
             <div className="text-sm text-dark-60">Pet Guardian</div>
           </div>
         </div>

@@ -10,7 +10,8 @@ interface IPetDetail {
   _id: string
   title: string
   createdBy: {
-    name: string
+    firstName: string
+    lastName: string
     userId: string
   }
   details: {
