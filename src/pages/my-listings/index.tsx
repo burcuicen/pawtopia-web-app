@@ -132,7 +132,7 @@ const MyListings: React.FC = () => {
             <h3 className="text-2xl font-bold text-dark-80 mb-3">No Listings Found</h3>
             <p className="text-dark-60 mb-6">Create your first listing to get started!</p>
             <button
-              onClick={() => navigate('/listing/create')}
+              onClick={() => navigate('/listing-form')}
               className="px-8 py-4 bg-primary text-white rounded-full font-bold hover:bg-primary-dark transition-colors"
             >
               Create Listing
