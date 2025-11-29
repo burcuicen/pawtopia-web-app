@@ -1,16 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useApi } from 'src/api/api-context'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 interface Pet {
   _id: string
-  name: string
-  age: number
-  gender: string
-  breed: string
-  image?: string
-  city: string
-  country: string
+  title: string
+  details: {
+    animalType: string
+    name: string
+    description: string
+    breed: string
+    photos: string[]
+    location: {
+      country: string
+      city: string
+    }
+    age: string
+    gender: string
+    healthDetails: {
+      isVaccinated: boolean
+      isNeutered: boolean
+      isDewormed: boolean
+      isHouseTrained: boolean
+      hasSpecialNeeds: boolean
+    }
+    fromWhere: string
+  }
+  contactDetails: {
+    email: string
+    phone: string
+  }
+  isApproved: boolean
 }
 
 const FeaturedPets: React.FC = () => {
@@ -23,10 +50,15 @@ const FeaturedPets: React.FC = () => {
     try {
       const { err, res } = await api.listing.getAll()
       if (!err && res?.data) {
-        // The API returns { items: [], metaData: {} }, so we need to access .items
         const items = res.data.items || []
-        const approvedPets = items.filter((pet: any) => pet.isApproved)
-        setPets(approvedPets.slice(0, 6))
+        // Filter: Must be approved AND have at least one photo
+        const approvedPets = items.filter((pet: any) => 
+          pet.isApproved && 
+          pet.details?.photos && 
+          pet.details.photos.length > 0 &&
+          pet.details.photos[0] !== ''
+        )
+        setPets(approvedPets.slice(0, 10)) // Show up to 10 featured pets
       }
     } catch (error) {
       console.error('Failed to load pets:', error)
@@ -38,18 +70,6 @@ const FeaturedPets: React.FC = () => {
   useEffect(() => {
     loadFeaturedPets()
   }, [loadFeaturedPets])
-
-  const getPlaceholderImage = (index: number) => {
-    const catImages = [
-      'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400',
-      'https://images.unsplash.com/photo-1573865526739-10c1d3a1b4cc?w=400',
-      'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=400',
-      'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=400',
-      'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400',
-      'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400',
-    ]
-    return catImages[index % catImages.length]
-  }
 
   return (
     <section className="font-sans py-20 px-5 bg-gradient-to-b from-white to-accent-bg">
@@ -68,33 +88,56 @@ const FeaturedPets: React.FC = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           </div>
         ) : pets.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {pets.map((pet, index) => (
-              <div 
-                key={pet._id} 
-                className="group bg-white rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
-                onClick={() => navigate(`/pets/${pet._id}`)}
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={pet.image || getPlaceholderImage(index)} 
-                    alt={pet.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 bg-white/95 px-3 py-1 rounded-full text-xs font-bold text-primary uppercase">
-                    {pet.gender}
+          <div className="px-4">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={30}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 3000, disableOnInteraction: false }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              className="pb-12 !px-4"
+            >
+              {pets.map((pet) => (
+                <SwiperSlide key={pet._id} className="pb-10">
+                  <div 
+                    className="group bg-white rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col"
+                    onClick={() => navigate(`/pets/${pet._id}`)}
+                  >
+                    <div className="relative h-64 overflow-hidden shrink-0">
+                      <img 
+                        src={pet.details.photos[0]} 
+                        alt={pet.details.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-4 right-4 bg-white/95 px-3 py-1 rounded-full text-xs font-bold text-primary uppercase shadow-sm">
+                        {pet.details.gender}
+                      </div>
+                    </div>
+                    <div className="p-6 flex flex-col grow">
+                      <h3 className="text-2xl font-bold text-dark-80 mb-2 truncate">{pet.details.name}</h3>
+                      <p className="text-primary-60 font-medium mb-4">{pet.details.breed}</p>
+                      <div className="mt-auto flex justify-between pt-4 border-t border-dark-10 text-sm text-dark-60">
+                        <span className="flex items-center gap-1">
+                          🎂 {pet.details.age}
+                        </span>
+                        <span className="flex items-center gap-1 truncate max-w-[50%]">
+                          📍 {pet.details.location.city}, {pet.details.location.country}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-dark-80 mb-2">{pet.name}</h3>
-                  <p className="text-primary-60 font-medium mb-4">{pet.breed}</p>
-                  <div className="flex justify-between pt-4 border-t border-dark-10 text-sm text-dark-60">
-                    <span>🎂 {pet.age} yrs</span>
-                    <span>📍 {pet.city}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         ) : (
           <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100 max-w-2xl mx-auto">
@@ -106,7 +149,7 @@ const FeaturedPets: React.FC = () => {
           </div>
         )}
 
-        <div className="text-center mt-16">
+        <div className="text-center mt-12">
           <Link 
             to="/pets" 
             className="inline-block px-10 py-4 bg-primary text-white rounded-full font-bold text-lg shadow-lg hover:bg-primary-dark hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
