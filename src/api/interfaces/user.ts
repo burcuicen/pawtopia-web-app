@@ -19,6 +19,7 @@ interface IUser extends IBase {
   surveyResults?: ISurveyResult
   country: string
   city: string
+  profilePicture?: string
 }
 interface IUserCreateDto {
   username: string

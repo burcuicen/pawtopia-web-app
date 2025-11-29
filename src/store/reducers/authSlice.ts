@@ -5,11 +5,13 @@ import type { IUser } from 'src/api/interfaces/user'
 interface AuthState {
   isLoggedIn: boolean
   userInfo: IUser | null
+  isAuthChecking: boolean
 }
 
 const initialState: AuthState = {
   isLoggedIn: false,
-  userInfo: null
+  userInfo: null,
+  isAuthChecking: true
 }
 
 export const authSlice = createSlice({
@@ -19,6 +21,7 @@ export const authSlice = createSlice({
     setAuthState: (state, action: PayloadAction<{ isLoggedIn: boolean; userInfo: IUser | null }>) => {
       state.isLoggedIn = action.payload.isLoggedIn
       state.userInfo = action.payload.userInfo
+      state.isAuthChecking = false
     }
   }
 })

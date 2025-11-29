@@ -93,7 +93,7 @@ const PetsBrowse: React.FC = () => {
   }
 
   return (
-    <div className="font-sans min-h-screen bg-gradient-to-b from-accent-bg to-white py-12 px-5">
+    <div className="font-sans w-full bg-gradient-to-b from-accent-bg to-white py-12 px-5">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

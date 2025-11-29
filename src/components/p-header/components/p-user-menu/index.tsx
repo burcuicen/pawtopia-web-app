@@ -3,11 +3,15 @@ import { useNavigate } from 'react-router-dom'
 
 import BaseIcon from 'src/components/_base/base-icon'
 import './styles.scss'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/store'
 
 const PUserMenu: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
+  const { userInfo } = useSelector((state: RootState) => state.auth)
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node
@@ -38,6 +42,12 @@ const PUserMenu: React.FC = () => {
         <BaseIcon icon="mdi-light:format-list-checks" width={24} />
         <span>Listings</span>
       </div>
+      {userInfo?.userType === 'paw-admin' && (
+        <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/admin')}>
+          <BaseIcon icon="material-symbols:admin-panel-settings-outline" width={24} />
+          <span>Admin Dashboard</span>
+        </div>
+      )}
       <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/logout')}>
         <BaseIcon icon="material-symbols-light:logout" width={24} />
         <span>Logout</span>
@@ -57,8 +67,12 @@ const PUserMenu: React.FC = () => {
       <div className="p-user-menu__icon">
         <BaseIcon icon="material-symbols:favorite-outline" width={32} />
       </div>
-      <div className={dropdownOpen ? 'p-user-menu__icon p-user-menu__icon--active' : 'p-user-menu__icon'}>
-        <BaseIcon icon="mingcute:user-4-line" width={32} onClick={toggleDropdown} />
+      <div className={dropdownOpen ? 'p-user-menu__icon p-user-menu__icon--active' : 'p-user-menu__icon'} onClick={toggleDropdown}>
+        {userInfo?.profilePicture ? (
+          <img src={userInfo.profilePicture} alt="User" className="w-8 h-8 rounded-full object-cover" />
+        ) : (
+          <BaseIcon icon="mingcute:user-4-line" width={32} />
+        )}
       </div>
 
       {dropdownOpen && renderDropdown()}

@@ -34,9 +34,32 @@ const PInput: React.FC<PInputProps> = ({
   const [error, setError] = useState('')
 
   const validateInput = React.useCallback((currentValue = inputValue) => {
-    if (required && !currentValue) setError('This field is required')
-    else setError('')
-  }, [required, inputValue])
+    if (required && !currentValue) {
+      setError('This field is required')
+      return false
+    }
+    
+    // Email validation
+    if (type === 'email' && currentValue) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(currentValue)) {
+        setError('Please enter a valid email address')
+        return false
+      }
+    }
+    
+    // Phone validation
+    if (type === 'tel' && currentValue) {
+      const phoneRegex = /^[\d\s\-\+\(\)]{7,}$/
+      if (!phoneRegex.test(currentValue)) {
+        setError('Please enter a valid phone number (at least 7 digits)')
+        return false
+      }
+    }
+    
+    setError('')
+    return true
+  }, [required, inputValue, type])
 
   useEffect(() => {
     setInputValue(value)
@@ -51,8 +74,20 @@ const PInput: React.FC<PInputProps> = ({
   }, [customError])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputValue(e.target.value)
-    onChange(e.target.value)
+    let newValue = e.target.value
+    
+    // For phone type, only allow numbers, spaces, +, -, (, )
+    if (type === 'tel') {
+      newValue = newValue.replace(/[^\d\s\-\+\(\)]/g, '')
+    }
+    
+    setInputValue(newValue)
+    onChange(newValue)
+    
+    // Real-time validation for email and phone
+    if (type === 'email' || type === 'tel') {
+      setTimeout(() => validateInput(newValue), 300)
+    }
   }
 
   const togglePasswordVisibility = () => {

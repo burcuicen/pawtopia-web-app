@@ -18,7 +18,9 @@ const MyListings: React.FC = () => {
     try {
       const { err, res } = await api.listing.getUsersListings()
       if (!err && res?.data) {
-        setListings(res.data)
+        // Backend returns { items: [], metaData: {} }
+        const listingsData = res.data.items || []
+        setListings(listingsData)
       }
     } catch (error) {
       console.error('Failed to load listings:', error)
@@ -51,7 +53,7 @@ const MyListings: React.FC = () => {
   })
 
   return (
-    <div className="font-sans min-h-screen bg-gradient-to-b from-accent-bg to-white py-12 px-5">
+    <div className="font-sans w-full bg-gradient-to-b from-accent-bg to-white py-12 px-5">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="mb-12">
@@ -108,7 +110,7 @@ const MyListings: React.FC = () => {
 
                   <div className="flex gap-2">
                     <button
-                      onClick={() => navigate(`/listing/edit/${listing._id}`)}
+                      onClick={() => navigate(`/edit-listing/${listing._id}`)}
                       className="flex-1 px-4 py-2 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-colors"
                     >
                       Edit

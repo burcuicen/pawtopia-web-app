@@ -17,8 +17,10 @@ import PetsBrowse from 'src/pages/pets'
 import PetDetail from 'src/pages/pet-detail'
 import Profile from 'src/pages/profile'
 import ListingForm from 'src/pages/listing-form'
+import EditListing from 'src/pages/edit-listing'
 import MyListings from 'src/pages/my-listings'
 import AdminDashboard from 'src/pages/admin'
+import About from 'src/pages/about'
 
 const App: React.FC = () => {
   useCheckLoginStatus()
@@ -56,6 +58,7 @@ const App: React.FC = () => {
         <MainLayout>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
             <Route path="/pets" element={<PetsBrowse />} />
             <Route path="/pets/:id" element={<PetDetail />} />
             <Route path="/login" element={<Login />} />
@@ -64,6 +67,7 @@ const App: React.FC = () => {
             <Route path="/onboarding" element={<Survey />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<ListingForm />} />
+            <Route path="/edit-listing/:id" element={<EditListing />} />
             <Route path="/my-listings" element={<MyListings />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>

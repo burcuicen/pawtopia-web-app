@@ -17,7 +17,7 @@ export class HttpClient {
 
     const onRequestFulFilled = (config: any): any => {
       const token = localStorage.getItem('token')
-      if (token) config.headers['auth-token'] = token
+      if (token) config.headers['Authorization'] = `Bearer ${token}`
 
       return config
     }

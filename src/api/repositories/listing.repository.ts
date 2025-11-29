@@ -61,6 +61,14 @@ export class ListingRepository {
     return await this.httpClient.request<T, E>(config)
   }
 
+  async reject<T = any, E = unknown>(id: string): Promise<RequestWrapper<T, E>> {
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      url: `${this.URL}/${id}/reject`
+    }
+    return await this.httpClient.request<T, E>(config)
+  }
+
   async getUsersListings<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
     const config: AxiosRequestConfig = {
       method: 'GET',

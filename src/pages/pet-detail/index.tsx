@@ -72,7 +72,7 @@ const PetDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-b from-accent-bg to-white">
+      <div className="w-full flex justify-center items-center bg-gradient-to-b from-accent-bg to-white">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
       </div>
     )
@@ -83,7 +83,7 @@ const PetDetail: React.FC = () => {
   }
 
   return (
-    <div className="font-sans min-h-screen bg-gradient-to-b from-accent-bg to-white py-12 px-5">
+    <div className="font-sans w-full bg-gradient-to-b from-accent-bg to-white py-12 px-5">
       <div className="max-w-[1200px] mx-auto">
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-2 text-sm text-dark-60">

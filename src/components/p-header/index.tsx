@@ -12,6 +12,7 @@ const PHeader: React.FC = () => {
   const isMobile = useSelector((state: RootState) => state.isMobile.value)
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const isAuthChecking = useSelector((state: RootState) => state.auth.isAuthChecking)
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
@@ -58,10 +59,10 @@ const PHeader: React.FC = () => {
         </a>
         {!isMobile && <div className="p-header__nav">{renderNavLinks()}</div>}
       </div>
-      {!isMobile && !isLoggedIn && <div className="p-header__actions">{renderActions()}</div>}
-      {isLoggedIn && <PUserMenu />}
-      {isMobile && !isLoggedIn && renderMobileIcon()}
-      {isMobile && dropdownOpen && !isLoggedIn && renderDropdown()}
+      {!isAuthChecking && !isMobile && !isLoggedIn && <div className="p-header__actions">{renderActions()}</div>}
+      {!isAuthChecking && isLoggedIn && <PUserMenu />}
+      {!isAuthChecking && isMobile && !isLoggedIn && renderMobileIcon()}
+      {!isAuthChecking && isMobile && dropdownOpen && !isLoggedIn && renderDropdown()}
     </header>
   )
 }
