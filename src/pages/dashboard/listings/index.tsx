@@ -91,6 +91,26 @@ const DashboardListings: React.FC = () => {
     setShowModal(true)
   }
 
+  const handleClear = async () => {
+    if (!window.confirm('Are you sure you want to delete ALL listings? This cannot be undone.')) return
+
+    try {
+      setLoading(true)
+      const { err } = await api.listing.clear()
+      if (!err) {
+        showToast.success('Database cleared successfully')
+        loadPendingListings()
+      } else {
+        showToast.error('Failed to clear database')
+      }
+    } catch (error) {
+      console.error('Clear error:', error)
+      showToast.error('An error occurred')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="mb-8 flex justify-between items-center">
@@ -98,12 +118,20 @@ const DashboardListings: React.FC = () => {
           <h1 className="text-3xl font-bold text-dark-80 mb-2">Listings Management</h1>
           <p className="text-dark-60">Review and manage listing approvals</p>
         </div>
-        <button
-          onClick={handleSeed}
-          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium"
-        >
-          Seed Database (Debug)
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleClear}
+            className="px-6 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+          >
+            Clear Database
+          </button>
+          <button
+            onClick={handleSeed}
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium"
+          >
+            Seed Database
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

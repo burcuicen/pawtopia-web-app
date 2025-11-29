@@ -85,5 +85,11 @@ export class ListingRepository {
       url: `${this.URL}/seed`
     }
     return await this.httpClient.request<T, E>(config)
+  async clear<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
+    const config: AxiosRequestConfig = {
+      method: 'DELETE',
+      url: `${this.URL}/clear`
+    }
+    return await this.httpClient.request<T, E>(config)
   }
 }
