@@ -22,7 +22,7 @@ const DashboardListings: React.FC = () => {
     try {
       setLoading(true)
       const skip = (page - 1) * limit
-      const { err, res } = await api.listing.getAll({ skip, limit })
+      const { err, res } = await api.listing.getAll({ skip, limit, filter: { isApproved: false } })
       if (!err && res?.data) {
         const items = res.data.items || []
         setPendingListings(items)
@@ -136,7 +136,7 @@ const DashboardListings: React.FC = () => {
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
         <h2 className="text-xl font-bold text-dark-80 mb-6">
-          All Listings ({totalCount})
+          Pending Listings ({totalCount})
         </h2>
 
         {loading ? (
