@@ -78,6 +78,7 @@ export class ListingRepository {
   }
 
   async seed<T = any, E = unknown>(): Promise<RequestWrapper<T, E>> {
+    console.log('ListingRepository.seed called')
     const config: AxiosRequestConfig = {
       method: 'POST',
       url: `${this.URL}/seed`

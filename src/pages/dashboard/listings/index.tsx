@@ -93,11 +93,12 @@ const DashboardListings: React.FC = () => {
           <h1 className="text-3xl font-bold text-dark-80 mb-2">Listings Management</h1>
           <p className="text-dark-60">Review and manage listing approvals</p>
         </div>
-        <BaseButton
-          title="Seed Database"
-          type="default"
+        <button
           onClick={handleSeed}
-        />
+          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium"
+        >
+          Seed Database (Debug)
+        </button>
       </div>
 
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
