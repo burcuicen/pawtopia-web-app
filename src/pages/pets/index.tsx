@@ -122,7 +122,7 @@ const PetsBrowse: React.FC = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1"  style={{flexDirection: 'column' }}>
             {/* Results Count */}
             <div className="mb-6 flex justify-between items-center">
               <p className="text-dark-60">
@@ -146,7 +146,6 @@ const PetsBrowse: React.FC = () => {
               /* Empty State */
               <div className="bg-white rounded-3xl p-16 text-center shadow-sm">
                 <div className="text-6xl mb-6">🔍</div>
-                <h3 className="text-2xl font-bold text-dark-80 mb-3">No Pets Found</h3>
                 <p className="text-dark-60 mb-6">
                   Try adjusting your filters or search query to find more pets.
                 </p>

@@ -63,4 +63,20 @@ export class AuthRepository {
 
     return await this.httpClient.request<T, E>(config)
   }
+
+  async toggleFavorite<T = IUser, E = unknown>(listingId: string): Promise<RequestWrapper<T, E>> {
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: '/user/favorites/' + listingId,
+    }
+    return await this.httpClient.request<T, E>(config)
+  }
+
+  async getFavorites<T = any[], E = unknown>(): Promise<RequestWrapper<T, E>> {
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      url: '/user/favorites/all',
+    }
+    return await this.httpClient.request<T, E>(config)
+  }
 }

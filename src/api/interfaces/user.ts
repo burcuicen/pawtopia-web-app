@@ -20,6 +20,7 @@ interface IUser extends IBase {
   country: string
   city: string
   profilePicture?: string
+  favorites?: string[]
 }
 interface IUserCreateDto {
   username: string

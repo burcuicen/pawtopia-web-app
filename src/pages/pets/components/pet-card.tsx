@@ -22,13 +22,41 @@ interface PetCardProps {
   pet: Pet
 }
 
+import { useSelector, useDispatch } from 'react-redux'
+import { useApi } from 'src/api/api-context'
+import { setAuthState } from 'src/store/reducers/authSlice'
+import { showToast } from 'src/utils/toast'
+
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const navigate = useNavigate()
+  const api = useApi()
+  const dispatch = useDispatch()
+  const { userInfo, isLoggedIn } = useSelector((state: any) => state.auth)
+
+  const isFavorite = userInfo?.favorites?.includes(pet._id)
+
+  const handleToggleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!isLoggedIn) {
+      showToast.error('Please login to add favorites')
+      return
+    }
+
+    try {
+      const { err, res } = await api.auth.toggleFavorite(pet._id)
+      if (!err && res?.data) {
+        dispatch(setAuthState({ isLoggedIn: true, userInfo: res.data }))
+        showToast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites')
+      }
+    } catch (error) {
+      console.error('Failed to toggle favorite:', error)
+    }
+  }
 
   return (
     <div
       onClick={() => navigate(`/pets/${pet._id}`)}
-      className="group bg-white rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+      className="group bg-white rounded-3xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative"
     >
       {/* Image */}
       <div className="relative h-64 overflow-hidden">
@@ -37,6 +65,17 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
           alt={pet.details.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
+        
+        {/* Favorite Button */}
+        <button
+          onClick={handleToggleFavorite}
+          className="absolute top-4 left-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors z-10"
+        >
+          <span className={`text-xl ${isFavorite ? 'text-red-500' : 'text-gray-400'}`}>
+            {isFavorite ? '❤️' : '🤍'}
+          </span>
+        </button>
+
         {/* Badges */}
         <div className="absolute top-4 right-4 flex flex-col gap-2">
           <span className="bg-white/95 px-3 py-1 rounded-full text-xs font-bold text-primary uppercase shadow-md">

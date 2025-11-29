@@ -21,6 +21,7 @@ import EditListing from 'src/pages/edit-listing'
 import MyListings from 'src/pages/my-listings'
 import AdminDashboard from 'src/pages/admin'
 import About from 'src/pages/about'
+import Favorites from 'src/pages/favorites'
 import DashboardLayout from 'src/layouts/dashboard'
 import Dashboard from 'src/pages/dashboard'
 import DashboardListings from 'src/pages/dashboard/listings'
@@ -97,6 +98,7 @@ const App: React.FC = () => {
                   <Route path="/create-listing" element={<ListingForm />} />
                   <Route path="/edit-listing/:id" element={<EditListing />} />
                   <Route path="/my-listings" element={<MyListings />} />
+                  <Route path="/favorites" element={<Favorites />} />
                 </Routes>
               </MainLayout>
             }
