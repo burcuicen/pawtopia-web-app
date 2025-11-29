@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/store'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import BaseButton from 'src/components/_base/base-button'
 import BaseIcon from 'src/components/_base/base-icon'
@@ -20,18 +20,15 @@ const PHeader: React.FC = () => {
 
   const renderNavLinks = () => (
     <>
-      <a href="/" className="p-header__dropdown-item">
+      <Link to="/" className="p-header__dropdown-item">
         Home
-      </a>
-      <a href="/blog" className="p-header__dropdown-item">
-        Blog
-      </a>
-      <a href="/about" className="p-header__dropdown-item">
+      </Link>
+      <Link to="/pets" className="p-header__dropdown-item">
+        Find a Pet
+      </Link>
+      <Link to="/about" className="p-header__dropdown-item">
         About
-      </a>
-      <a href="/contact" className="p-header__dropdown-item">
-        Contact
-      </a>
+      </Link>
     </>
   )
 

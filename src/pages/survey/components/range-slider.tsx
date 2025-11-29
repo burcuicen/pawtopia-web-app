@@ -13,21 +13,21 @@ export const AgeRangeSlider: React.FC<AgeRangeSliderProps> = ({ onChange, initia
   const sliderRef = useRef<HTMLInputElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
 
+  const updateSliderProgress = React.useCallback(() => {
+    if (sliderRef.current && progressRef.current) {
+      const percentage = (value / 100) * 100
+      progressRef.current.style.width = `${percentage}%`
+    }
+  }, [value])
+
   useEffect(() => {
     updateSliderProgress()
-  }, [value])
+  }, [value, updateSliderProgress])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value)
     setValue(newValue)
     onChange(getAgeCategory(newValue))
-  }
-
-  const updateSliderProgress = () => {
-    if (sliderRef.current && progressRef.current) {
-      const percentage = (value / 100) * 100
-      progressRef.current.style.width = `${percentage}%`
-    }
   }
 
   const getAgeCategory = (value: number): AgeCategory => {

@@ -13,6 +13,7 @@ interface PInputProps {
   required?: boolean
   validateForm?: boolean
   customError?: string
+  disabled?: boolean
 }
 
 const PInput: React.FC<PInputProps> = ({
@@ -25,11 +26,17 @@ const PInput: React.FC<PInputProps> = ({
   required,
   validateForm,
   customError,
-  textarea = false
+  textarea = false,
+  disabled = false
 }) => {
   const [inputValue, setInputValue] = useState(value)
   const [inputType, setInputType] = useState(type)
   const [error, setError] = useState('')
+
+  const validateInput = React.useCallback((currentValue = inputValue) => {
+    if (required && !currentValue) setError('This field is required')
+    else setError('')
+  }, [required, inputValue])
 
   useEffect(() => {
     setInputValue(value)
@@ -37,7 +44,7 @@ const PInput: React.FC<PInputProps> = ({
 
   useEffect(() => {
     if (validateForm) validateInput()
-  }, [validateForm])
+  }, [validateForm, validateInput])
 
   useEffect(() => {
     if (customError) setError(customError)
@@ -46,11 +53,6 @@ const PInput: React.FC<PInputProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputValue(e.target.value)
     onChange(e.target.value)
-  }
-
-  const validateInput = (currentValue = inputValue) => {
-    if (required && !currentValue) setError('This field is required')
-    else setError('')
   }
 
   const togglePasswordVisibility = () => {
@@ -68,6 +70,7 @@ const PInput: React.FC<PInputProps> = ({
             onChange={handleChange}
             className={`p-input__input p-input__textarea ${error ? 'error' : ''}`}
             required={required}
+            disabled={disabled}
           />
         ) : (
           <input
@@ -77,6 +80,7 @@ const PInput: React.FC<PInputProps> = ({
             onChange={handleChange}
             className={`p-input__input ${error ? 'error' : ''}`}
             required={required}
+            disabled={disabled}
           />
         )}
         {hasHideIcon && type === 'password' && (

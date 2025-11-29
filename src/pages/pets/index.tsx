@@ -34,15 +34,7 @@ const PetsBrowse: React.FC = () => {
   })
   const api = useApi()
 
-  useEffect(() => {
-    loadPets()
-  }, [])
-
-  useEffect(() => {
-    applyFilters()
-  }, [pets, searchQuery, filters])
-
-  const loadPets = async () => {
+  const loadPets = React.useCallback(async () => {
     try {
       setLoading(true)
       const { err, res } = await api.listing.getAll()
@@ -56,37 +48,45 @@ const PetsBrowse: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [api.listing])
 
-  const applyFilters = () => {
-    let filtered = [...pets]
+  useEffect(() => {
+    loadPets()
+  }, [loadPets])
 
-    // Search filter
-    if (searchQuery) {
-      filtered = filtered.filter(
-        (pet) =>
-          pet.details.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          pet.details.breed.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+  useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...pets]
+
+      // Search filter
+      if (searchQuery) {
+        filtered = filtered.filter(
+          (pet) =>
+            pet.details.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            pet.details.breed.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      }
+
+      // Animal type filter
+      if (filters.animalType !== 'all') {
+        filtered = filtered.filter((pet) => pet.details.animalType === filters.animalType)
+      }
+
+      // Age filter
+      if (filters.age !== 'all') {
+        filtered = filtered.filter((pet) => pet.details.age === filters.age)
+      }
+
+      // Gender filter
+      if (filters.gender !== 'all') {
+        filtered = filtered.filter((pet) => pet.details.gender === filters.gender)
+      }
+
+      setFilteredPets(filtered)
     }
 
-    // Animal type filter
-    if (filters.animalType !== 'all') {
-      filtered = filtered.filter((pet) => pet.details.animalType === filters.animalType)
-    }
-
-    // Age filter
-    if (filters.age !== 'all') {
-      filtered = filtered.filter((pet) => pet.details.age === filters.age)
-    }
-
-    // Gender filter
-    if (filters.gender !== 'all') {
-      filtered = filtered.filter((pet) => pet.details.gender === filters.gender)
-    }
-
-    setFilteredPets(filtered)
-  }
+    applyFilters()
+  }, [pets, searchQuery, filters])
 
   const handleFilterChange = (filterType: string, value: string) => {
     setFilters((prev) => ({ ...prev, [filterType]: value }))

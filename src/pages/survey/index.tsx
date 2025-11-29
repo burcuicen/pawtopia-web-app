@@ -122,6 +122,14 @@ const SurveyPage: React.FC = () => {
       if (surveyData.animalCareHistory) preparedSurveyData.animalCareHistory = animalCareHistory
       if (surveyData.reason) preparedSurveyData.reason = reason
 
+      // Map survey purpose to userType
+      let userType: 'paw-seeker' | 'paw-guardian' | 'other' = 'other'
+      if (purpose === 'looking-pet') {
+        userType = 'paw-seeker'
+      } else if (purpose === 'looking-guardian') {
+        userType = 'paw-guardian'
+      }
+
       const body = {
         username,
         email,
@@ -130,6 +138,7 @@ const SurveyPage: React.FC = () => {
         password,
         city,
         country,
+        userType,
         surveyResults: preparedSurveyData
       }
 

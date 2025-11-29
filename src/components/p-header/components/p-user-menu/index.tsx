@@ -26,15 +26,15 @@ const PUserMenu: React.FC = () => {
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
   const renderNMenuItems = () => (
     <>
-      <div className="p-user-menu-dropdown__nav">
+      <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/profile')}>
         <BaseIcon icon="solar:user-outline" width={24} />
         <span>Profile</span>
       </div>
-      <div className="p-user-menu-dropdown__nav">
+      <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/dashboard')}>
         <BaseIcon icon="material-symbols-light:dashboard-outline-rounded" width={24} />
         <span>Dashboard</span>
       </div>
-      <div className="p-user-menu-dropdown__nav">
+      <div className="p-user-menu-dropdown__nav" onClick={() => navigate('/my-listings')}>
         <BaseIcon icon="mdi-light:format-list-checks" width={24} />
         <span>Listings</span>
       </div>

@@ -26,7 +26,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ photos, name, animalType })
       <div className="relative h-96 bg-dark-10">
         <img
           src={displayPhotos[selectedIndex]}
-          alt={`${name} - Photo ${selectedIndex + 1}`}
+          alt={`${name} - ${selectedIndex + 1}`}
           className="w-full h-full object-cover"
         />
       </div>

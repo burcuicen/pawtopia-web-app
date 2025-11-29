@@ -40,4 +40,27 @@ export class AuthRepository {
 
     return await this.httpClient.request<T, E>(config)
   }
+
+  async getProfile<T = IUser, E = unknown>(): Promise<RequestWrapper<T, E>> {
+    const token = localStorage.getItem('token')
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      url: this.URL + '/profile',
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    return await this.httpClient.request<T, E>(config)
+  }
+
+  async updateProfile<T = IUser, E = unknown>(body: Partial<IUser>): Promise<RequestWrapper<T, E>> {
+    const token = localStorage.getItem('token')
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      url: this.URL + '/profile',
+      headers: { Authorization: `Bearer ${token}` },
+      data: body
+    }
+
+    return await this.httpClient.request<T, E>(config)
+  }
 }

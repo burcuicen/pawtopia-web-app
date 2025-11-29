@@ -19,11 +19,7 @@ const FeaturedPets: React.FC = () => {
   const navigate = useNavigate()
   const api = useApi()
 
-  useEffect(() => {
-    loadFeaturedPets()
-  }, [])
-
-  const loadFeaturedPets = async () => {
+  const loadFeaturedPets = React.useCallback(async () => {
     try {
       const { err, res } = await api.listing.getAll()
       if (!err && res?.data) {
@@ -34,7 +30,11 @@ const FeaturedPets: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [api.listing])
+
+  useEffect(() => {
+    loadFeaturedPets()
+  }, [loadFeaturedPets])
 
   const getPlaceholderImage = (index: number) => {
     const catImages = [

@@ -15,6 +15,10 @@ import Signup from 'src/pages/signup'
 import Survey from 'src/pages/survey'
 import PetsBrowse from 'src/pages/pets'
 import PetDetail from 'src/pages/pet-detail'
+import Profile from 'src/pages/profile'
+import ListingForm from 'src/pages/listing-form'
+import MyListings from 'src/pages/my-listings'
+import AdminDashboard from 'src/pages/admin'
 
 const App: React.FC = () => {
   useCheckLoginStatus()
@@ -58,6 +62,10 @@ const App: React.FC = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/onboarding" element={<Survey />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/create-listing" element={<ListingForm />} />
+            <Route path="/my-listings" element={<MyListings />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </MainLayout>
       </Router>

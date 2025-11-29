@@ -6,7 +6,7 @@ import PetInfo from './components/pet-info'
 import HealthInfo from './components/health-info'
 import ContactCard from './components/contact-card'
 
-interface PetDetail {
+interface IPetDetail {
   _id: string
   title: string
   createdBy: {
@@ -44,31 +44,31 @@ const PetDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const api = useApi()
-  const [pet, setPet] = useState<PetDetail | null>(null)
+  const [pet, setPet] = useState<IPetDetail | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const loadPetDetail = async (petId: string) => {
+      try {
+        setLoading(true)
+        const { err, res } = await api.listing.getById(petId)
+        if (!err && res?.data) {
+          setPet(res.data)
+        } else {
+          navigate('/pets')
+        }
+      } catch (error) {
+        console.error('Failed to load pet details:', error)
+        navigate('/pets')
+      } finally {
+        setLoading(false)
+      }
+    }
+
     if (id) {
       loadPetDetail(id)
     }
-  }, [id])
-
-  const loadPetDetail = async (petId: string) => {
-    try {
-      setLoading(true)
-      const { err, res } = await api.listing.getById(petId)
-      if (!err && res?.data) {
-        setPet(res.data)
-      } else {
-        navigate('/pets')
-      }
-    } catch (error) {
-      console.error('Failed to load pet details:', error)
-      navigate('/pets')
-    } finally {
-      setLoading(false)
-    }
-  }
+  }, [id, api.listing, navigate])
 
   if (loading) {
     return (

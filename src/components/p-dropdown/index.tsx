@@ -32,19 +32,20 @@ const PDropdown: React.FC<BaseDropdownProps> = ({ items, onSelect, placeholder, 
     item.value.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const validateInput = React.useCallback((currentValue = selectedItem) => {
+    if (required && !currentValue) setError('This field is required')
+    else setError('')
+  }, [required, selectedItem])
+
   useEffect(() => {
     if (validateForm) validateInput()
-  }, [validateForm])
+  }, [validateForm, validateInput])
 
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus()
     }
   }, [isOpen])
-  const validateInput = (currentValue = selectedItem) => {
-    if (required && !currentValue) setError('This field is required')
-    else setError('')
-  }
   useEffect(() => {
     if (selectedValue) {
       const selected = items.find(item => item.id === selectedValue)

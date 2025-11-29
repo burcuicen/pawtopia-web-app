@@ -42,7 +42,7 @@ const Signup: React.FC = () => {
   const [cities, setCities] = useState<DropdownItem[]>([])
 
   const [validateForm, setValidateForm] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
 
   useEffect(() => {
     const countryItems = Country.getAllCountries().map(

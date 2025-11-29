@@ -44,8 +44,8 @@ export interface IRegisterDto {
   username: string
   email: string
   password: string
-  firstName?: string
-  lastName?: string
+  firstName: string
+  lastName: string
   userType?: 'paw-seeker' | 'paw-guardian' | 'other'
   surveyResults?: ISurveyResult
   country: string
